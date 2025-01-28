@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancManagement" minHeight="768.0" minWidth="816.0" style="-fx-background-color: #1C1C1C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.traveler.controller.ManagementController">
+   <children>
+      <VBox alignment="CENTER" minHeight="768.0" minWidth="816.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="lblManagement" alignment="CENTER" minHeight="50.0" minWidth="600.0" text="Management" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="btnVehicles" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#btnVehiclesOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Vehicles" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnDrivers" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#btnDriversOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Drivers" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnGiudes" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#btnGiudesOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Guides" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnCashiers" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#btnCashiersOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Cashiers" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnAdmins" alignment="CENTER" contentDisplay="CENTER" layoutX="210.0" layoutY="477.0" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#btnAdminsOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Admins" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

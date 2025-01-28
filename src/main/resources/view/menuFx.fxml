@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancMenuPage" minHeight="768.0" minWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.traveler.controller.MenuController">
+   <children>
+      <HBox alignment="CENTER" minHeight="600.0" minWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="BASELINE_CENTER" maxWidth="250.0" minHeight="600.0" minWidth="200.0" style="-fx-background-color: #1C1C1C;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="TOP" minHeight="50.0" minWidth="200.0" text="Traveler" textAlignment="CENTER" textFill="#F5F5F5" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button fx:id="btnHome" alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="554.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnHomeOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Home" textAlignment="CENTER" textFill="#FFFFFF">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnTravelers" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnTravelersOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Travelers" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnDetails" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnDetailsOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Details" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnManagement" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnManagementOnAction" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Management" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnRequest" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnRequestOnAction" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Request" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnPayment" alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="344.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnPaymentOnAction" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="Payments" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnAbout" alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="344.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnAboutOnAction" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 5; -fx-background-color: #333333;" text="About" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnLogOut" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#btnLogOutOnAction" style="-fx-background-radius: 5; -fx-background-color: #FF0000;" text="Log Out" textAlignment="CENTER" textFill="#FFFFFF" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <AnchorPane fx:id="ancContent" minHeight="768.0" minWidth="816.0" style="-fx-background-color: #2C2C2C;" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fitHeight="768.0" fitWidth="826.0" layoutX="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../assests/images/context.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="146.0" layoutY="117.0" minHeight="50.0" minWidth="200.0" text="The Traveler" textAlignment="CENTER" textFill="#F5F5F5">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="223.0" layoutY="175.0" minHeight="50.0" minWidth="200.0" text="Travel Management System" textAlignment="CENTER" textFill="#F5F5F5">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="223.0" layoutY="240.0" minHeight="50.0" minWidth="150.0" prefHeight="177.0" prefWidth="314.0" text="Welcome to The Traveler, your trusted companion for discovering and experiencing the wonders of Sri Lanka." textAlignment="CENTER" textFill="#F5F5F5" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="768.0" minWidth="816.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.traveler.controller.AboutController">
+   <children>
+      <ImageView fitHeight="768.0" fitWidth="816.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../assests/images/about.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="291.0" layoutY="89.0" minHeight="50.0" minWidth="200.0" text="The Traveler" textAlignment="CENTER" textFill="#1879da" underline="true">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <Group layoutX="251.0" layoutY="200.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="TOP" layoutY="27.0" minHeight="50.0" minWidth="150.0" prefHeight="212.0" prefWidth="313.0" text="Welcome to The Traveler, your trusted companion for discovering and experiencing the wonders of Sri Lanka. At The Traveler, we specialize in creating seamless and memorable travel experiences tailored to your unique preferences and needs. Whether you're an adventurous solo traveler, a family seeking quality time, or a group of friends exploring new horizons, we've got you covered🌏🚗✨." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" layoutX="50.0" minHeight="27.0" minWidth="200.0" prefHeight="27.0" prefWidth="213.0" text="About Us - The Traveler" textAlignment="CENTER" textFill="#00ff9d">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Group layoutX="251.0" layoutY="463.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="TOP" layoutY="27.0" minHeight="50.0" minWidth="150.0" prefHeight="189.0" prefWidth="313.0" text="Our mission is to simplify travel planning and enhance your journey by providing a comprehensive platform that combines convenience, safety, and personalized services. We believe that travel should be an enriching experience, free from the hassles of logistics, allowing you to immerse yourself fully in the beauty and culture of Sri Lanka." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" layoutX="50.0" minHeight="27.0" minWidth="200.0" prefHeight="27.0" prefWidth="213.0" text="Our Mission" textAlignment="CENTER" textFill="#00ff9d">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+   </children>
+</AnchorPane>
