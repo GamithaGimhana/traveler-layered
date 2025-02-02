@@ -1,14 +1,14 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
-import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
+import lk.ijse.gdse.traveler.dto.TravelerDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TravelerModel {
-
+public class TravelerDAOImpl implements TravelerDAO {
     public String getNextTravelerId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select traveler_id from traveler order by traveler_id desc limit 1");
 

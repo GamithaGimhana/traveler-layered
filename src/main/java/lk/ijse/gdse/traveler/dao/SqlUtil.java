@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CrudUtil {
+public class SqlUtil {
     // This class contains utility methods for executing CRUD operations (Create, Read, Update, Delete) with the database.
     public static <T>T execute(String sql,Object... obj) throws SQLException {
         // A generic method to execute SQL queries, with a flexible return type `T`.

@@ -2,7 +2,7 @@ package lk.ijse.gdse.traveler.model;
 
 import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.dto.GuideAssignmentDTO;
-import lk.ijse.gdse.traveler.dao.CrudUtil;
+import lk.ijse.gdse.traveler.dao.SqlUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class GuideAssignmentModel {
             connection.setAutoCommit(false); // 1
 
             // @isOrderSaved: Saves the order details into the orders table
-            boolean isGuideAssignment = CrudUtil.execute(
+            boolean isGuideAssignment = SqlUtil.execute(
                     "insert into guide_assignment values (?,?,?,?,?,?)",
                     guideAssignmentDTO.getRequestId(),
                     guideAssignmentDTO.getGuideId(),
@@ -54,7 +54,7 @@ public class GuideAssignmentModel {
 
     public boolean checkRequestIdExists(String requestId) throws SQLException {
         String query = "SELECT COUNT(*) FROM request WHERE request_id = ?";
-        ResultSet rs = CrudUtil.execute(query, requestId);
+        ResultSet rs = SqlUtil.execute(query, requestId);
         if (rs.next()) {
             return rs.getInt(1) > 0;
         }

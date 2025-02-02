@@ -1,13 +1,13 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
-import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dto.VehicleDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class VehicleModel {
+public class VehicleDaoImpl {
 
     public String getNextVehicleId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select vehicle_id from vehicle order by vehicle_id desc limit 1");

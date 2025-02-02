@@ -1,17 +1,17 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
+import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.dto.TripDTO;
-import lk.ijse.gdse.traveler.dao.SqlUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TripModel {
-    private final VehicleModel vehicleModel = new VehicleModel();
-    private final GuideModel guideModel = new GuideModel();
-    private final DriverModel driverModel = new DriverModel();
+public class TripDaoImpl {
+    private final VehicleDaoImpl vehicleDaoImpl = new VehicleDaoImpl();
+    private final GuideDaoImpl guideDaoImpl = new GuideDaoImpl();
+    private final DriverDaoImpl driverDaoImpl = new DriverDaoImpl();
 
     public String getNextTripId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select trip_id from trip order by trip_id desc limit 1");
@@ -49,9 +49,9 @@ public class TripModel {
             if (isTripSaved) {
                 System.out.println("Trip Saved");
                 // @isOrderDetailListSaved: Saves the list of order details
-                boolean isVehicleUpdated = vehicleModel.updateVehicleList(tripDTO.getVehicleId(), tripDTO.isTripStatus());
-                boolean isGuideUpdated = guideModel.updateGuideList(tripDTO.getGuideId(), tripDTO.isTripStatus());
-                boolean isDriverUpdated = driverModel.updateDriverList(tripDTO.getDriverId(), tripDTO.isTripStatus());
+                boolean isVehicleUpdated = vehicleDaoImpl.updateVehicleList(tripDTO.getVehicleId(), tripDTO.isTripStatus());
+                boolean isGuideUpdated = guideDaoImpl.updateGuideList(tripDTO.getGuideId(), tripDTO.isTripStatus());
+                boolean isDriverUpdated = driverDaoImpl.updateDriverList(tripDTO.getDriverId(), tripDTO.isTripStatus());
 
                 if (isVehicleUpdated && isGuideUpdated && isDriverUpdated) {
                     System.out.println("Vehicle, Guide and Driver Updated");

@@ -1,13 +1,13 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
-import lk.ijse.gdse.traveler.dto.PaymentDTO;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dto.PaymentDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PaymentModel {
+public class PaymentDaoImpl {
     public String getNextPaymentId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select payment_id from payment order by payment_id desc limit 1");
 

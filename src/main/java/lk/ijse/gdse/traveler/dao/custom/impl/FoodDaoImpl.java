@@ -1,13 +1,13 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
-import lk.ijse.gdse.traveler.dto.FoodDTO;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dto.FoodDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class FoodModel {
+public class FoodDaoImpl {
     public String getNextFoodId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select foodservice_id from food order by foodservice_id desc limit 1");
 

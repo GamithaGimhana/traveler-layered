@@ -1,15 +1,15 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
+import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.dto.VehicleRentDTO;
-import lk.ijse.gdse.traveler.dao.SqlUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class VehicleRentModel {
-    private final VehicleModel vehicleModel = new VehicleModel();
+public class VehicleRentDaoImpl {
+    private final VehicleDaoImpl vehicleDaoImpl = new VehicleDaoImpl();
 
     public boolean saveVehicleRent(VehicleRentDTO vehicleRentDTO) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -32,7 +32,7 @@ public class VehicleRentModel {
             if (isVehicleRentSaved) {
                 System.out.println("Vehicle Rent Saved");
                 // @isOrderDetailListSaved: Saves the list of order details
-                boolean isVehicleUpdated = vehicleModel.updateVehicleList(vehicleRentDTO.getVehicleId(), vehicleRentDTO.isVRentalStatus());
+                boolean isVehicleUpdated = vehicleDaoImpl.updateVehicleList(vehicleRentDTO.getVehicleId(), vehicleRentDTO.isVRentalStatus());
                 if (isVehicleUpdated) {
                     System.out.println("Vehicle Updated");
                     // @commit: Commits the transaction if both order and details are saved successfully

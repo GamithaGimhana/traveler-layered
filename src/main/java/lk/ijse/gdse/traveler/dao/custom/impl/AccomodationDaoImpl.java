@@ -1,13 +1,13 @@
-package lk.ijse.gdse.traveler.model;
+package lk.ijse.gdse.traveler.dao.custom.impl;
 
-import lk.ijse.gdse.traveler.dto.AccomodationDTO;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dto.AccomodationDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AccomodationModel {
+public class AccomodationDaoImpl {
     public String getNextAccomodationId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select accommodation_id from accommodation order by accommodation_id desc limit 1");
 
