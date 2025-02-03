@@ -14,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
+import lk.ijse.gdse.traveler.dao.custom.impl.TravelerDAOImpl;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.dto.tm.TravelerTM;
 import lk.ijse.gdse.traveler.model.TravelerModel;
@@ -93,6 +95,9 @@ public class TravelerController implements Initializable {
     @FXML
     private TextField txtNic;
 
+    TravelerModel travelerModel = new TravelerModel();
+    TravelerDAO travelerDAO = new TravelerDAOImpl();
+
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException {
         String travelerId = lblTravelerId.getText();
@@ -102,7 +107,7 @@ public class TravelerController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = travelerModel.deleteTraveler(travelerId);
+            boolean isDeleted = travelerDAO.delete(travelerId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler deleted...!").show();
@@ -171,7 +176,7 @@ public class TravelerController implements Initializable {
                     nic
             );
 
-            boolean isSaved = travelerModel.saveTraveler(travelerDTO);
+            boolean isSaved = travelerDAO.save(travelerDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler saved...!").show();
@@ -240,7 +245,7 @@ public class TravelerController implements Initializable {
                     nic
             );
 
-            boolean isSaved = travelerModel.updateTraveler(travelerDTO);
+            boolean isSaved = travelerDAO.update(travelerDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler updated...!").show();
@@ -324,10 +329,8 @@ public class TravelerController implements Initializable {
         txtNationality.setText("");
     }
 
-    TravelerModel travelerModel = new TravelerModel();
-
     private void loadTableData() throws SQLException {
-        ArrayList<TravelerDTO> travelerDTOS = travelerModel.getAllTravelers();
+        ArrayList<TravelerDTO> travelerDTOS = travelerDAO.getAll();
 
         ObservableList<TravelerTM> travelerTMS = FXCollections.observableArrayList();
 
@@ -347,7 +350,7 @@ public class TravelerController implements Initializable {
     }
 
     public void loadNextTravelerId() throws SQLException {
-        String nextTravelerId = travelerModel.getNextTravelerId();
+        String nextTravelerId = travelerDAO.getNextId();
         lblTravelerId.setText(nextTravelerId);
     }
 

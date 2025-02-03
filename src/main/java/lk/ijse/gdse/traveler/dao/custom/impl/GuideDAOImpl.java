@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GuideDaoImpl {
+public class GuideDAOImpl implements GuideDAO {
 
     public String getNextGuideId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select guide_id from guide order by guide_id desc limit 1");

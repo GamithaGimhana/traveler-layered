@@ -1,6 +1,7 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.TripDAO;
 import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.dto.TripDTO;
 
@@ -8,10 +9,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TripDaoImpl {
-    private final VehicleDaoImpl vehicleDaoImpl = new VehicleDaoImpl();
-    private final GuideDaoImpl guideDaoImpl = new GuideDaoImpl();
-    private final DriverDaoImpl driverDaoImpl = new DriverDaoImpl();
+public class TripDAOImpl implements TripDAO {
+    private final VehicleDAOImpl vehicleDaoImpl = new VehicleDAOImpl();
+    private final GuideDAOImpl guideDaoImpl = new GuideDAOImpl();
+    private final DriverDAOImpl driverDaoImpl = new DriverDAOImpl();
 
     public String getNextTripId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select trip_id from trip order by trip_id desc limit 1");

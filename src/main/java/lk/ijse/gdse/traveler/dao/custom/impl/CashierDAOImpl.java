@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.CashierDAO;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CashierDaoImpl {
+public class CashierDAOImpl implements CashierDAO {
     public String getNextCashierId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select cashier_id from cashier order by cashier_id desc limit 1");
 

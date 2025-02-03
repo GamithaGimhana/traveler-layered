@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.LanguageDAO;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class LanguageDaoImpl {
+public class LanguageDAOImpl implements LanguageDAO {
     public String getNextLangId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select language_id from languages order by language_id desc limit 1");
 

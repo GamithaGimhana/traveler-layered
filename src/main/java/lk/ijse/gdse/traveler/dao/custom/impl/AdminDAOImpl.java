@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AdminDaoImpl {
+public class AdminDAOImpl implements AdminDAO {
     public String getNextAdminId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select admin_id from admin order by admin_id desc limit 1");
 

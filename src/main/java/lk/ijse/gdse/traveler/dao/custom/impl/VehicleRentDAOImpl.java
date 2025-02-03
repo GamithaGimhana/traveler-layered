@@ -1,39 +1,41 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.VehicleRentDAO;
 import lk.ijse.gdse.traveler.db.DBConnection;
-import lk.ijse.gdse.traveler.dto.GuideAssignmentDTO;
+import lk.ijse.gdse.traveler.dto.VehicleRentDTO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GuideAssignmentDaoImpl {
-    private final GuideDaoImpl guideDaoImpl = new GuideDaoImpl();
+public class VehicleRentDAOImpl implements VehicleRentDAO {
+    private final VehicleDAOImpl vehicleDaoImpl = new VehicleDAOImpl();
 
-    public boolean saveGuideAssignment(GuideAssignmentDTO guideAssignmentDTO) throws SQLException {
+    public boolean saveVehicleRent(VehicleRentDTO vehicleRentDTO) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
         try {
             // @autoCommit: Disables auto-commit to manually control the transaction
             connection.setAutoCommit(false); // 1
 
             // @isOrderSaved: Saves the order details into the orders table
-            boolean isGuideAssignment = SqlUtil.execute(
-                    "insert into guide_assignment values (?,?,?,?,?,?)",
-                    guideAssignmentDTO.getRequestId(),
-                    guideAssignmentDTO.getGuideId(),
-                    guideAssignmentDTO.getTravelerId(),
-                    guideAssignmentDTO.getStartDate(),
-                    guideAssignmentDTO.getEndDate(),
-                    guideAssignmentDTO.isStatus()
+            boolean isVehicleRentSaved = SqlUtil.execute(
+                    "insert into rental_transaction values (?,?,?,?,?,?,?)",
+                    vehicleRentDTO.getRequestId(),
+                    vehicleRentDTO.getTravelerId(),
+                    vehicleRentDTO.getVehicleId(),
+                    vehicleRentDTO.getRentalDate(),
+                    vehicleRentDTO.getReturnDate(),
+                    vehicleRentDTO.getRentalCost(),
+                    vehicleRentDTO.isVRentalStatus()
             );
             // If the order is saved successfully
-            if (isGuideAssignment) {
-                System.out.println("Guide Assignment Saved");
+            if (isVehicleRentSaved) {
+                System.out.println("Vehicle Rent Saved");
                 // @isOrderDetailListSaved: Saves the list of order details
-                boolean isGuideUpdated = guideDaoImpl.updateGuideList(guideAssignmentDTO.getGuideId(), guideAssignmentDTO.isStatus());
-                if (isGuideUpdated) {
-                    System.out.println("Guide Updated");
+                boolean isVehicleUpdated = vehicleDaoImpl.updateVehicleList(vehicleRentDTO.getVehicleId(), vehicleRentDTO.isVRentalStatus());
+                if (isVehicleUpdated) {
+                    System.out.println("Vehicle Updated");
                     // @commit: Commits the transaction if both order and details are saved successfully
                     connection.commit(); // 2
                     return true;
@@ -60,4 +62,5 @@ public class GuideAssignmentDaoImpl {
         }
         return false;
     }
+
 }

@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.HealthcareDAO;
 import lk.ijse.gdse.traveler.dto.HealthcareDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class HealthcareDaoImpl {
+public class HealthcareDAOImpl implements HealthcareDAO {
     public String getNextHealthcareId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select healthcare_id from healthcare order by healthcare_id desc limit 1");
 

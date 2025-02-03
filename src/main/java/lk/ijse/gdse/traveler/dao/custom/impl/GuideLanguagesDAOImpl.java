@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.GuideLanguagesDAO;
 import lk.ijse.gdse.traveler.dto.GuideLanguagesDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GuideLanguagesDaoImpl {
+public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     public boolean saveGLang(GuideLanguagesDTO guideLanguagesDTO) throws SQLException {
         return SqlUtil.execute(
                 "insert into guide_languages values (?,?)",

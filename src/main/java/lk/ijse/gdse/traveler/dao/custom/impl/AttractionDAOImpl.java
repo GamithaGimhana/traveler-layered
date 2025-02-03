@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.AttractionDAO;
 import lk.ijse.gdse.traveler.dto.AttractionDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AttractionDaoImpl {
+public class AttractionDAOImpl implements AttractionDAO {
     public String getNextAttractionId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select attraction_id from attraction order by attraction_id desc limit 1");
 

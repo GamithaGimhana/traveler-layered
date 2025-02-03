@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TravelerDAOImpl implements TravelerDAO {
-    public String getNextTravelerId() throws SQLException {
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select traveler_id from traveler order by traveler_id desc limit 1");
 
         if (rst.next()) {
@@ -22,7 +22,7 @@ public class TravelerDAOImpl implements TravelerDAO {
         return "T001"; // return the default ID
     }
 
-    public boolean saveTraveler(TravelerDTO travelerDTO) throws SQLException {
+    public boolean save(TravelerDTO travelerDTO) throws SQLException {
         return SqlUtil.execute(
                 "insert into traveler values (?,?,?,?,?,?)",
                 travelerDTO.getTravelerId(),
@@ -34,7 +34,7 @@ public class TravelerDAOImpl implements TravelerDAO {
         );
     }
 
-    public ArrayList<TravelerDTO> getAllTravelers() throws SQLException {
+    public ArrayList<TravelerDTO> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from traveler");
 
         ArrayList<TravelerDTO> travelerDTOS = new ArrayList<>();
@@ -53,7 +53,7 @@ public class TravelerDAOImpl implements TravelerDAO {
         return travelerDTOS;
     }
 
-    public boolean updateTraveler(TravelerDTO travelerDTO) throws SQLException {
+    public boolean update(TravelerDTO travelerDTO) throws SQLException {
         return SqlUtil.execute(
                 "update traveler set name=?, email=?, contact_number=?, nationality=?, id_number=? where traveler_id=?",
                 travelerDTO.getName(),
@@ -65,8 +65,13 @@ public class TravelerDAOImpl implements TravelerDAO {
         );
     }
 
-    public boolean deleteTraveler(String travelerId) throws SQLException {
+    public boolean delete(String travelerId) throws SQLException {
         return SqlUtil.execute("delete from traveler where traveler_id=?", travelerId);
+    }
+
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
     }
 
     public ArrayList<String> getAllTravelerIds() throws SQLException {

@@ -1,13 +1,14 @@
 package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
+import lk.ijse.gdse.traveler.dao.custom.RequestDAO;
 import lk.ijse.gdse.traveler.dto.RequestDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class RequestDaoImpl {
+public class RequestDAOImpl implements RequestDAO {
     public String getNextRequestId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select request_id from request order by request_id desc limit 1");
 
