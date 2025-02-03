@@ -2,14 +2,15 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
-import lk.ijse.gdse.traveler.dto.AdminDTO;
+import lk.ijse.gdse.traveler.entity.Admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminDAOImpl implements AdminDAO {
-    public String getNextAdminId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select admin_id from admin order by admin_id desc limit 1");
 
         if (rst.next()) {
@@ -22,25 +23,27 @@ public class AdminDAOImpl implements AdminDAO {
         return "A001"; // return the default ID
     }
 
-    public boolean saveAdmin(AdminDTO adminDTO) throws SQLException {
+    @Override
+    public boolean save(Admin admin) throws SQLException {
         return SqlUtil.execute(
                 "insert into admin values (?,?,?,?,?,?)",
-                adminDTO.getAdminId(),
-                adminDTO.getName(),
-                adminDTO.getEmail(),
-                adminDTO.getContactNumber(),
-                adminDTO.getUsername(),
-                adminDTO.getPassword()
+                admin.getAdminId(),
+                admin.getName(),
+                admin.getEmail(),
+                admin.getContactNumber(),
+                admin.getUsername(),
+                admin.getPassword()
         );
     }
 
-    public ArrayList<AdminDTO> getAllAdmin() throws SQLException {
+    @Override
+    public ArrayList<Admin> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from admin");
 
-        ArrayList<AdminDTO> adminDTOS = new ArrayList<>();
+        ArrayList<Admin> admins = new ArrayList<>();
 
         while (rst.next()) {
-            AdminDTO adminDTO = new AdminDTO(
+            Admin admin = new Admin(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -48,28 +51,31 @@ public class AdminDAOImpl implements AdminDAO {
                     rst.getString(5),
                     rst.getString(6)
             );
-            adminDTOS.add(adminDTO);
+            admins.add(admin);
         }
-        return adminDTOS;
+        return admins;
     }
 
-    public boolean updateAdmin(AdminDTO adminDTO) throws SQLException {
+    @Override
+    public boolean update(Admin admin) throws SQLException {
         return SqlUtil.execute(
                 "update admin set name=?, email=?, contact_number=?, username=?, password=? where admin_id=?",
-                adminDTO.getName(),
-                adminDTO.getEmail(),
-                adminDTO.getContactNumber(),
-                adminDTO.getUsername(),
-                adminDTO.getPassword(),
-                adminDTO.getAdminId()
+                admin.getName(),
+                admin.getEmail(),
+                admin.getContactNumber(),
+                admin.getUsername(),
+                admin.getPassword(),
+                admin.getAdminId()
         );
     }
 
-    public boolean deleteAdmin(String adminId) throws SQLException {
+    @Override
+    public boolean delete(String adminId) throws SQLException {
         return SqlUtil.execute("delete from admin where admin_id=?", adminId);
     }
 
-    public ArrayList<String> getAllAdminIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select admin_id from admin");
 
         ArrayList<String> adminIds = new ArrayList<>();
@@ -81,11 +87,12 @@ public class AdminDAOImpl implements AdminDAO {
         return adminIds;
     }
 
-    public AdminDTO findById(String selectedAdminId) throws SQLException {
+    @Override
+    public Admin findById(String selectedAdminId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from admin where admin_id=?", selectedAdminId);
 
         if (rst.next()) {
-            return new AdminDTO(
+            return new Admin(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),

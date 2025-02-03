@@ -2,14 +2,15 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.FoodDAO;
-import lk.ijse.gdse.traveler.dto.FoodDTO;
+import lk.ijse.gdse.traveler.entity.Food;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FoodDAOImpl implements FoodDAO {
-    public String getNextFoodId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select foodservice_id from food order by foodservice_id desc limit 1");
 
         if (rst.next()) {
@@ -22,44 +23,58 @@ public class FoodDAOImpl implements FoodDAO {
         return "F001"; // return the default ID
     }
 
-    public boolean saveFood(FoodDTO foodDTO) throws SQLException {
+    @Override
+    public boolean save(Food food) throws SQLException {
         return SqlUtil.execute(
                 "insert into food values (?,?,?,?)",
-                foodDTO.getFoodServiceId(),
-                foodDTO.getName(),
-                foodDTO.getType(),
-                foodDTO.getContact()
+                food.getFoodServiceId(),
+                food.getName(),
+                food.getType(),
+                food.getContact()
         );
     }
 
-    public ArrayList<FoodDTO> getAllFoods() throws SQLException {
+    @Override
+    public ArrayList<Food> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from food");
 
-        ArrayList<FoodDTO> foodDTOS = new ArrayList<>();
+        ArrayList<Food> foods = new ArrayList<>();
 
         while (rst.next()) {
-            FoodDTO foodDTO = new FoodDTO(
+            Food food = new Food(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4)
             );
-            foodDTOS.add(foodDTO);
+            foods.add(food);
         }
-        return foodDTOS;
+        return foods;
     }
 
-    public boolean updateFood(FoodDTO foodDTO) throws SQLException {
+    @Override
+    public boolean update(Food food) throws SQLException {
         return SqlUtil.execute(
                 "update food set name=?, cuisine_type=?, contact_info=? where foodservice_id=?",
-                foodDTO.getName(),
-                foodDTO.getType(),
-                foodDTO.getContact(),
-                foodDTO.getFoodServiceId()
+                food.getName(),
+                food.getType(),
+                food.getContact(),
+                food.getFoodServiceId()
         );
     }
 
-    public boolean deleteFood(String foodId) throws SQLException {
+    @Override
+    public boolean delete(String foodId) throws SQLException {
         return SqlUtil.execute("delete from food where foodservice_id=?", foodId);
+    }
+
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Food findById(String selectedId) throws SQLException {
+        return null;
     }
 }

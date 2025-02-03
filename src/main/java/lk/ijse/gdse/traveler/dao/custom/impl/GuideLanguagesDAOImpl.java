@@ -2,49 +2,59 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.GuideLanguagesDAO;
-import lk.ijse.gdse.traveler.dto.GuideLanguagesDTO;
+import lk.ijse.gdse.traveler.entity.GuideLanguages;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
-    public boolean saveGLang(GuideLanguagesDTO guideLanguagesDTO) throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
+        return "";
+    }
+
+    @Override
+    public boolean save(GuideLanguages guideLanguages) throws SQLException {
         return SqlUtil.execute(
                 "insert into guide_languages values (?,?)",
-                guideLanguagesDTO.getGuideId(),
-                guideLanguagesDTO.getLangId()
+                guideLanguages.getGuideId(),
+                guideLanguages.getLangId()
         );
     }
 
-    public ArrayList<GuideLanguagesDTO> getAllGLanguages() throws SQLException {
+    @Override
+    public ArrayList<GuideLanguages> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from guide_languages");
 
-        ArrayList<GuideLanguagesDTO> guideLanguagesDTOS = new ArrayList<>();
+        ArrayList<GuideLanguages> guideLanguages = new ArrayList<>();
 
         while (rst.next()) {
-            GuideLanguagesDTO guideLanguagesDTO = new GuideLanguagesDTO(
+            GuideLanguages guideLanguage = new GuideLanguages(
                     rst.getString(1),
                     rst.getString(2)
             );
-            guideLanguagesDTOS.add(guideLanguagesDTO);
+            guideLanguages.add(guideLanguage);
         }
-        return guideLanguagesDTOS;
+        return guideLanguages;
     }
 
-    public boolean updateGLang(GuideLanguagesDTO guideLanguagesDTO) throws SQLException {
+    @Override
+    public boolean update(GuideLanguages guideLanguages) throws SQLException {
         return SqlUtil.execute(
                 "update guide_languages set guide_id=? where language_id=?",
-                guideLanguagesDTO.getGuideId(),
-                guideLanguagesDTO.getLangId()
+                guideLanguages.getGuideId(),
+                guideLanguages.getLangId()
         );
     }
 
-    public boolean deleteGLang(String guideLangId) throws SQLException {
+    @Override
+    public boolean delete(String guideLangId) throws SQLException {
         return SqlUtil.execute("delete from guide_languages where language_id=?", guideLangId);
     }
 
-    public ArrayList<String> getAllGLangIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select language_id from guide_languages");
 
         ArrayList<String> guideLanguageIds = new ArrayList<>();
@@ -56,11 +66,12 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
         return guideLanguageIds;
     }
 
-    public GuideLanguagesDTO findById(String selectedGuideLanguageId) throws SQLException {
+    @Override
+    public GuideLanguages findById(String selectedGuideLanguageId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from guide_languages where language_id=?", selectedGuideLanguageId);
 
         if (rst.next()) {
-            return new GuideLanguagesDTO(
+            return new GuideLanguages(
                     rst.getString(1),
                     rst.getString(2)
             );

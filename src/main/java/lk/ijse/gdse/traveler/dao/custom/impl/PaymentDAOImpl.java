@@ -2,14 +2,16 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.PaymentDAO;
-import lk.ijse.gdse.traveler.dto.PaymentDTO;
+import lk.ijse.gdse.traveler.entity.Payment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PaymentDAOImpl implements PaymentDAO {
-    public String getNextPaymentId() throws SQLException {
+
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select payment_id from payment order by payment_id desc limit 1");
 
         if (rst.next()) {
@@ -22,26 +24,28 @@ public class PaymentDAOImpl implements PaymentDAO {
         return "P001"; // return the default ID
     }
 
-    public boolean savePayment(PaymentDTO paymentDTO) throws SQLException {
+    @Override
+    public boolean save(Payment payment) throws SQLException {
         return SqlUtil.execute(
                 "insert into payment values (?,?,?,?,?,?)",
-                paymentDTO.getPaymentId(),
-                paymentDTO.getTravelerId(),
-                paymentDTO.getTripId(),
-                paymentDTO.getAmount(),
-                paymentDTO.getRemaining(),
-                paymentDTO.getPaymentDate(),
-                paymentDTO.getPaymentMethod()
+                payment.getPaymentId(),
+                payment.getTravelerId(),
+                payment.getTripId(),
+                payment.getAmount(),
+                payment.getRemaining(),
+                payment.getPaymentDate(),
+                payment.getPaymentMethod()
         );
     }
 
-    public ArrayList<PaymentDTO> getAllPayments() throws SQLException {
+    @Override
+    public ArrayList<Payment> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from payment");
 
-        ArrayList<PaymentDTO> paymentDTOS = new ArrayList<>();
+        ArrayList<Payment> payments = new ArrayList<>();
 
         while (rst.next()) {
-            PaymentDTO paymentDTO = new PaymentDTO(
+            Payment payment = new Payment(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -50,29 +54,37 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(6).toLocalDate(),
                     rst.getString(7)
             );
-            paymentDTOS.add(paymentDTO);
+            payments.add(payment);
         }
-        return paymentDTOS;
+        return payments;
     }
 
-    public boolean updatePayment(PaymentDTO paymentDTO) throws SQLException {
+    @Override
+    public boolean update(Payment payment) throws SQLException {
         return SqlUtil.execute(
                 "update payment set travelr_id=?, trip_id=?, amount=?, remain_amount=?, payment_date=?, payment_method=? where payment_id=?",
-                paymentDTO.getTravelerId(),
-                paymentDTO.getTripId(),
-                paymentDTO.getAmount(),
-                paymentDTO.getRemaining(),
-                paymentDTO.getPaymentDate(),
-                paymentDTO.getPaymentMethod(),
-                paymentDTO.getPaymentId()
+                payment.getTravelerId(),
+                payment.getTripId(),
+                payment.getAmount(),
+                payment.getRemaining(),
+                payment.getPaymentDate(),
+                payment.getPaymentMethod(),
+                payment.getPaymentId()
         );
     }
 
-    public boolean deletePayment(String paymentId) throws SQLException {
+    @Override
+    public boolean delete(String paymentId) throws SQLException {
         return SqlUtil.execute("delete from payment where payment_id=?", paymentId);
     }
 
-    public ArrayList<String> getAllPaymentIds(String selectedTraveler) throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getAllIds(String selectedTraveler) throws SQLException {
         ResultSet rst = SqlUtil.execute("select payment_id from payment where traveler_id=?", selectedTraveler);
 
         ArrayList<String> paymentIds = new ArrayList<>();
@@ -84,11 +96,12 @@ public class PaymentDAOImpl implements PaymentDAO {
         return paymentIds;
     }
 
-    public PaymentDTO findById(String selectedPaymentId) throws SQLException {
+    @Override
+    public Payment findById(String selectedPaymentId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from payment where payment_id=?", selectedPaymentId);
 
         if (rst.next()) {
-            return new PaymentDTO(
+            return new Payment(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),

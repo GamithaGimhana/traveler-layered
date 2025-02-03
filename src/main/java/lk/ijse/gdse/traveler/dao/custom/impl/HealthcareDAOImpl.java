@@ -3,13 +3,15 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.HealthcareDAO;
 import lk.ijse.gdse.traveler.dto.HealthcareDTO;
+import lk.ijse.gdse.traveler.entity.Healthcare;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HealthcareDAOImpl implements HealthcareDAO {
-    public String getNextHealthcareId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select healthcare_id from healthcare order by healthcare_id desc limit 1");
 
         if (rst.next()) {
@@ -22,44 +24,58 @@ public class HealthcareDAOImpl implements HealthcareDAO {
         return "H001"; // return the default ID
     }
 
-    public boolean saveHealthcare(HealthcareDTO healthcareDTO) throws SQLException {
+    @Override
+    public boolean save(Healthcare healthcare) throws SQLException {
         return SqlUtil.execute(
                 "insert into healthcare values (?,?,?,?)",
-                healthcareDTO.getHealthcareId(),
-                healthcareDTO.getName(),
-                healthcareDTO.getContact(),
-                healthcareDTO.isEmergency()
+                healthcare.getHealthcareId(),
+                healthcare.getName(),
+                healthcare.getContact(),
+                healthcare.isEmergency()
         );
     }
 
-    public ArrayList<HealthcareDTO> getAllHealthcares() throws SQLException {
+    @Override
+    public ArrayList<Healthcare> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from healthcare");
 
-        ArrayList<HealthcareDTO> healthcareDTOS = new ArrayList<>();
+        ArrayList<Healthcare> healthcares = new ArrayList<>();
 
         while (rst.next()) {
-            HealthcareDTO healthcareDTO = new HealthcareDTO(
+            Healthcare healthcare = new Healthcare(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getBoolean(4)
             );
-            healthcareDTOS.add(healthcareDTO);
+            healthcares.add(healthcare);
         }
-        return healthcareDTOS;
+        return healthcares;
     }
 
-    public boolean updateHealthcare(HealthcareDTO healthcareDTO) throws SQLException {
+    @Override
+    public boolean update(Healthcare healthcare) throws SQLException {
         return SqlUtil.execute(
                 "update healthcare set name=?, contact_info=?, emergency_services=? where healthcare_id=?",
-                healthcareDTO.getName(),
-                healthcareDTO.getContact(),
-                healthcareDTO.isEmergency(),
-                healthcareDTO.getHealthcareId()
+                healthcare.getName(),
+                healthcare.getContact(),
+                healthcare.isEmergency(),
+                healthcare.getHealthcareId()
         );
     }
 
-    public boolean deleteHealthcare(String healthcareId) throws SQLException {
+    @Override
+    public boolean delete(String healthcareId) throws SQLException {
         return SqlUtil.execute("delete from healthcare where healthcare_id=?", healthcareId);
+    }
+
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Healthcare findById(String selectedId) throws SQLException {
+        return null;
     }
 }

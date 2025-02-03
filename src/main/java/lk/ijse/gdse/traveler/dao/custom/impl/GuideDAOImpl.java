@@ -2,7 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
-import lk.ijse.gdse.traveler.dto.GuideDTO;
+import lk.ijse.gdse.traveler.entity.Guide;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class GuideDAOImpl implements GuideDAO {
 
-    public String getNextGuideId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select guide_id from guide order by guide_id desc limit 1");
 
         if (rst.next()) {
@@ -23,51 +24,56 @@ public class GuideDAOImpl implements GuideDAO {
         return "G001"; // return the default ID
     }
 
-    public boolean saveGuide(GuideDTO guideDTO) throws SQLException {
+    @Override
+    public boolean save(Guide guide) throws SQLException {
         return SqlUtil.execute(
                 "insert into guide values (?,?,?,?,?)",
-                guideDTO.getGuideId(),
-                guideDTO.getName(),
-                guideDTO.getLicenseNumber(),
-                guideDTO.getContactNumber(),
-                guideDTO.isAvailabilityStatus()
+                guide.getGuideId(),
+                guide.getName(),
+                guide.getLicenseNumber(),
+                guide.getContactNumber(),
+                guide.isAvailabilityStatus()
         );
     }
 
-    public ArrayList<GuideDTO> getAllGuides() throws SQLException {
+    @Override
+    public ArrayList<Guide> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from guide");
 
-        ArrayList<GuideDTO> guideDTOS = new ArrayList<>();
+        ArrayList<Guide> guides = new ArrayList<>();
 
         while (rst.next()) {
-            GuideDTO guideDTO = new GuideDTO(
+            Guide guide = new Guide(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4),
                     rst.getBoolean(5)
             );
-            guideDTOS.add(guideDTO);
+            guides.add(guide);
         }
-        return guideDTOS;
+        return guides;
     }
 
-    public boolean updateGuide(GuideDTO guideDTO) throws SQLException {
+    @Override
+    public boolean update(Guide guide) throws SQLException {
         return SqlUtil.execute(
                 "update guide set name=?, license_number=?, contact_number=?, availability_status=? where guide_id=?",
-                guideDTO.getName(),
-                guideDTO.getLicenseNumber(),
-                guideDTO.getContactNumber(),
-                guideDTO.isAvailabilityStatus(),
-                guideDTO.getGuideId()
+                guide.getName(),
+                guide.getLicenseNumber(),
+                guide.getContactNumber(),
+                guide.isAvailabilityStatus(),
+                guide.getGuideId()
         );
     }
 
-    public boolean deleteGuide(String guideId) throws SQLException {
+    @Override
+    public boolean delete(String guideId) throws SQLException {
         return SqlUtil.execute("delete from guide where guide_id=?", guideId);
     }
 
-    public ArrayList<String> getAllGuideIds(String selectedLanguageId) throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds(String selectedLanguageId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select g.guide_id from guide g join guide_languages gL on g.guide_id = gL.guide_id where gL.language_id = ? and g.availability_status=true", selectedLanguageId);
 
         ArrayList<String> guideIds = new ArrayList<>();
@@ -79,7 +85,8 @@ public class GuideDAOImpl implements GuideDAO {
         return guideIds;
     }
 
-    public ArrayList<String> getAllGuideIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select guide_id from guide");
 
         ArrayList<String> guideIds = new ArrayList<>();
@@ -91,11 +98,12 @@ public class GuideDAOImpl implements GuideDAO {
         return guideIds;
     }
 
-    public GuideDTO findById(String selectedGuideId) throws SQLException {
+    @Override
+    public Guide findById(String selectedGuideId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from guide where guide_id=?", selectedGuideId);
 
         if (rst.next()) {
-            return new GuideDTO(
+            return new Guide(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -106,6 +114,7 @@ public class GuideDAOImpl implements GuideDAO {
         return null;
     }
 
+    @Override
     public boolean updateGuideList(String guideId, boolean status) throws SQLException {
         System.out.println("Guide is updated");
         return SqlUtil.execute(

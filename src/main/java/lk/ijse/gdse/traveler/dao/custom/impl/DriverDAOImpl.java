@@ -2,7 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.DriverDAO;
-import lk.ijse.gdse.traveler.dto.DriverDTO;
+import lk.ijse.gdse.traveler.entity.Driver;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class DriverDAOImpl implements DriverDAO {
 
-    public String getNextDriverId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select driver_id from driver order by driver_id desc limit 1");
 
         if (rst.next()) {
@@ -23,51 +24,56 @@ public class DriverDAOImpl implements DriverDAO {
         return "D001"; // return the default ID
     }
 
-    public boolean saveDriver(DriverDTO driverDTO) throws SQLException {
+    @Override
+    public boolean save(Driver driver) throws SQLException {
         return SqlUtil.execute(
                 "insert into driver values (?,?,?,?,?)",
-                driverDTO.getDriverId(),
-                driverDTO.getName(),
-                driverDTO.getLicenseNumber(),
-                driverDTO.getContactNumber(),
-                driverDTO.isAvailabilityStatus()
+                driver.getDriverId(),
+                driver.getName(),
+                driver.getLicenseNumber(),
+                driver.getContactNumber(),
+                driver.isAvailabilityStatus()
         );
     }
 
-    public ArrayList<DriverDTO> getAllDrivers() throws SQLException {
+    @Override
+    public ArrayList<Driver> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from driver");
 
-        ArrayList<DriverDTO> driverDTOS = new ArrayList<>();
+        ArrayList<Driver> drivers = new ArrayList<>();
 
         while (rst.next()) {
-            DriverDTO driverDTO = new DriverDTO(
+            Driver driver = new Driver(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4),
                     rst.getBoolean(5)
             );
-            driverDTOS.add(driverDTO);
+            drivers.add(driver);
         }
-        return driverDTOS;
+        return drivers;
     }
 
-    public boolean updateDriver(DriverDTO driverDTO) throws SQLException {
+    @Override
+    public boolean update(Driver driver) throws SQLException {
         return SqlUtil.execute(
                 "update driver set name=?, license_number=?, contact_number=?, availability_status=? where driver_id=?",
-                driverDTO.getName(),
-                driverDTO.getLicenseNumber(),
-                driverDTO.getContactNumber(),
-                driverDTO.isAvailabilityStatus(),
-                driverDTO.getDriverId()
+                driver.getName(),
+                driver.getLicenseNumber(),
+                driver.getContactNumber(),
+                driver.isAvailabilityStatus(),
+                driver.getDriverId()
         );
     }
 
-    public boolean deleteDriver(String driverId) throws SQLException {
+    @Override
+    public boolean delete(String driverId) throws SQLException {
         return SqlUtil.execute("delete from driver where driver_id=?", driverId);
     }
 
-    public ArrayList<String> getAllDriverIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select driver_id from driver where availability_status=true");
 
         ArrayList<String> driverIds = new ArrayList<>();
@@ -79,11 +85,12 @@ public class DriverDAOImpl implements DriverDAO {
         return driverIds;
     }
 
-    public DriverDTO findById(String selectedDriverId) throws SQLException {
+    @Override
+    public Driver findById(String selectedDriverId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from driver where driver_id=?", selectedDriverId);
 
         if (rst.next()) {
-            return new DriverDTO(
+            return new Driver(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -94,6 +101,7 @@ public class DriverDAOImpl implements DriverDAO {
         return null;
     }
 
+    @Override
     public boolean updateDriverList(String driverId, boolean status) throws SQLException {
         System.out.println("Driver is updated");
         return SqlUtil.execute(

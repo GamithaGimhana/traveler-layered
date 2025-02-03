@@ -2,14 +2,16 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.LanguageDAO;
-import lk.ijse.gdse.traveler.dto.LanguageDTO;
+import lk.ijse.gdse.traveler.entity.Language;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LanguageDAOImpl implements LanguageDAO {
-    public String getNextLangId() throws SQLException {
+
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select language_id from languages order by language_id desc limit 1");
 
         if (rst.next()) {
@@ -22,42 +24,47 @@ public class LanguageDAOImpl implements LanguageDAO {
         return "L001"; // return the default ID
     }
 
-    public boolean saveLang(LanguageDTO languageDTO) throws SQLException {
+    @Override
+    public boolean save(Language language) throws SQLException {
         return SqlUtil.execute(
                 "insert into languages values (?,?)",
-                languageDTO.getLangId(),
-                languageDTO.getLanguage()
+                language.getLangId(),
+                language.getLanguage()
         );
     }
 
-    public ArrayList<LanguageDTO> getAllLanguages() throws SQLException {
+    @Override
+    public ArrayList<Language> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from languages");
 
-        ArrayList<LanguageDTO> languagesDTOS = new ArrayList<>();
+        ArrayList<Language> languages = new ArrayList<>();
 
         while (rst.next()) {
-            LanguageDTO languagesDTO = new LanguageDTO(
+            Language language = new Language(
                     rst.getString(1),
                     rst.getString(2)
             );
-            languagesDTOS.add(languagesDTO);
+            languages.add(language);
         }
-        return languagesDTOS;
+        return languages;
     }
 
-    public boolean updateLang(LanguageDTO languagesDTO) throws SQLException {
+    @Override
+    public boolean update(Language language) throws SQLException {
         return SqlUtil.execute(
                 "update languages set language_name=? where language_id=?",
-                languagesDTO.getLanguage(),
-                languagesDTO.getLangId()
+                language.getLanguage(),
+                language.getLangId()
         );
     }
 
-    public boolean deletLang(String langId) throws SQLException {
+    @Override
+    public boolean delete(String langId) throws SQLException {
         return SqlUtil.execute("delete from languages where language_id=?", langId);
     }
 
-    public ArrayList<String> getAllLangIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select language_id from languages");
 
         ArrayList<String> languageIds = new ArrayList<>();
@@ -69,11 +76,12 @@ public class LanguageDAOImpl implements LanguageDAO {
         return languageIds;
     }
 
-    public LanguageDTO findById(String selectedLanguageId) throws SQLException {
+    @Override
+    public Language findById(String selectedLanguageId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from languages where language_id=?", selectedLanguageId);
 
         if (rst.next()) {
-            return new LanguageDTO(
+            return new Language(
                     rst.getString(1),
                     rst.getString(2)
             );

@@ -2,14 +2,15 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.RequestDAO;
-import lk.ijse.gdse.traveler.dto.RequestDTO;
+import lk.ijse.gdse.traveler.entity.Request;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RequestDAOImpl implements RequestDAO {
-    public String getNextRequestId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select request_id from request order by request_id desc limit 1");
 
         if (rst.next()) {
@@ -22,40 +23,54 @@ public class RequestDAOImpl implements RequestDAO {
         return "R001"; // return the default ID
     }
 
-    public boolean saveRequest(RequestDTO requestDTO) throws SQLException {
+    @Override
+    public boolean save(Request request) throws SQLException {
         return SqlUtil.execute(
                 "insert into request values (?,?,?,?,?)",
-                requestDTO.getRequestId(),
-                requestDTO.getTravelerId(),
-                requestDTO.getRequestDate(),
-                requestDTO.getRequestType(),
-                requestDTO.getCashierId()
+                request.getRequestId(),
+                request.getTravelerId(),
+                request.getRequestDate(),
+                request.getRequestType(),
+                request.getCashierId()
         );
     }
 
-    public ArrayList<RequestDTO> getAllRequests() throws SQLException {
+    @Override
+    public ArrayList<Request> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from request");
 
-        ArrayList<RequestDTO> requestDTOS = new ArrayList<>();
+        ArrayList<Request> requests = new ArrayList<>();
 
         while (rst.next()) {
-            RequestDTO requestDTO = new RequestDTO(
+            Request request = new Request(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getString(4),
                     rst.getString(5)
             );
-            requestDTOS.add(requestDTO);
+            requests.add(request);
         }
-        return requestDTOS;
+        return requests;
     }
 
-    public boolean deleteRequest(String requestId) throws SQLException {
+    @Override
+    public boolean update(Request dto) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String requestId) throws SQLException {
         return SqlUtil.execute("delete from request where request_id=?", requestId);
     }
 
-    public ArrayList<String> getAllRequestIds(String selectedTravelerId) throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getAllIds(String selectedTravelerId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select request_id from request where traveler_id=?", selectedTravelerId);
 
         ArrayList<String> requestIds = new ArrayList<>();
@@ -67,11 +82,12 @@ public class RequestDAOImpl implements RequestDAO {
         return requestIds;
     }
 
-    public RequestDTO findById(String selectedRequestId) throws SQLException {
+    @Override
+    public Request findById(String selectedRequestId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from request where request_id=?", selectedRequestId);
 
         if (rst.next()) {
-            return new RequestDTO(
+            return new Request(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getDate(3),

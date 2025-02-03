@@ -3,13 +3,16 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.CashierDAO;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
+import lk.ijse.gdse.traveler.entity.Cashier;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CashierDAOImpl implements CashierDAO {
-    public String getNextCashierId() throws SQLException {
+
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select cashier_id from cashier order by cashier_id desc limit 1");
 
         if (rst.next()) {
@@ -22,13 +25,14 @@ public class CashierDAOImpl implements CashierDAO {
         return "C001"; // return the default ID
     }
 
-    public boolean saveCashier(CashierDTO cashierDTO) throws SQLException {
+    @Override
+    public boolean save(Cashier cashier) throws SQLException {
         // Validate admin_id
         try {
-            System.out.println("Validating Admin ID: " + cashierDTO.getAdminId());
-            ResultSet adminCheck = SqlUtil.execute("SELECT admin_id FROM admin WHERE admin_id = ?", cashierDTO.getAdminId());
+            System.out.println("Validating Admin ID: " + cashier.getAdminId());
+            ResultSet adminCheck = SqlUtil.execute("SELECT admin_id FROM admin WHERE admin_id = ?", cashier.getAdminId());
             if (!adminCheck.next()) {
-                throw new SQLException("Invalid Admin ID: " + cashierDTO.getAdminId());
+                throw new SQLException("Invalid Admin ID: " + cashier.getAdminId());
             }
         } catch (SQLException e) {
             System.err.println("Error during Admin ID validation: " + e.getMessage());
@@ -37,23 +41,24 @@ public class CashierDAOImpl implements CashierDAO {
 
         return SqlUtil.execute(
                 "insert into cashier values (?,?,?,?,?,?,?)",
-                cashierDTO.getCashierId(),
-                cashierDTO.getName(),
-                cashierDTO.getEmail(),
-                cashierDTO.getContactNumber(),
-                cashierDTO.getUsername(),
-                cashierDTO.getPassword(),
-                cashierDTO.getAdminId()
+                cashier.getCashierId(),
+                cashier.getName(),
+                cashier.getEmail(),
+                cashier.getContactNumber(),
+                cashier.getUsername(),
+                cashier.getPassword(),
+                cashier.getAdminId()
         );
     }
 
-    public ArrayList<CashierDTO> getAllCashier() throws SQLException {
+    @Override
+    public ArrayList<Cashier> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from cashier");
 
-        ArrayList<CashierDTO> cashierDTOS = new ArrayList<>();
+        ArrayList<Cashier> cashiers = new ArrayList<>();
 
         while (rst.next()) {
-            CashierDTO cashierDTO = new CashierDTO(
+            Cashier cashier = new Cashier(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -62,12 +67,13 @@ public class CashierDAOImpl implements CashierDAO {
                     rst.getString(6),
                     rst.getString(7)
                     );
-            cashierDTOS.add(cashierDTO);
+            cashiers.add(cashier);
         }
-        return cashierDTOS;
+        return cashiers;
     }
 
-    public ArrayList<String> getAllCashierIds() throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
         ResultSet rst = SqlUtil.execute("select cashier_id from cashier");
 
         ArrayList<String> cashierIds = new ArrayList<>();
@@ -79,13 +85,14 @@ public class CashierDAOImpl implements CashierDAO {
         return cashierIds;
     }
 
-    public boolean updateCashier(CashierDTO cashierDTO) throws SQLException {
+    @Override
+    public boolean update(Cashier cashier) throws SQLException {
         // Validate admin_id
         try {
-            System.out.println("Validating Admin ID: " + cashierDTO.getAdminId());
-            ResultSet adminCheck = SqlUtil.execute("SELECT admin_id FROM admin WHERE admin_id = ?", cashierDTO.getAdminId());
+            System.out.println("Validating Admin ID: " + cashier.getAdminId());
+            ResultSet adminCheck = SqlUtil.execute("SELECT admin_id FROM admin WHERE admin_id = ?", cashier.getAdminId());
             if (!adminCheck.next()) {
-                throw new SQLException("Invalid Admin ID: " + cashierDTO.getAdminId());
+                throw new SQLException("Invalid Admin ID: " + cashier.getAdminId());
             }
         } catch (SQLException e) {
             System.err.println("Error during Admin ID validation: " + e.getMessage());
@@ -94,25 +101,27 @@ public class CashierDAOImpl implements CashierDAO {
 
         return SqlUtil.execute(
                 "update cashier set name=?, email=?, contact_number=?, username=?, password=?, admin_id=? where cashier_id=?",
-                cashierDTO.getName(),
-                cashierDTO.getEmail(),
-                cashierDTO.getContactNumber(),
-                cashierDTO.getUsername(),
-                cashierDTO.getPassword(),
-                cashierDTO.getAdminId(),
-                cashierDTO.getCashierId()
+                cashier.getName(),
+                cashier.getEmail(),
+                cashier.getContactNumber(),
+                cashier.getUsername(),
+                cashier.getPassword(),
+                cashier.getAdminId(),
+                cashier.getCashierId()
         );
     }
 
-    public boolean deleteCashier(String cashierId) throws SQLException {
+    @Override
+    public boolean delete(String cashierId) throws SQLException {
         return SqlUtil.execute("delete from cashier where cashier_id=?", cashierId);
     }
 
-    public CashierDTO findById(String selectedCashierId) throws SQLException {
+    @Override
+    public Cashier findById(String selectedCashierId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from cashier where cashier_id=?", selectedCashierId);
 
         if (rst.next()) {
-            return new CashierDTO(
+            return new Cashier(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),

@@ -2,14 +2,15 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.AttractionDAO;
-import lk.ijse.gdse.traveler.dto.AttractionDTO;
+import lk.ijse.gdse.traveler.entity.Attraction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AttractionDAOImpl implements AttractionDAO {
-    public String getNextAttractionId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select attraction_id from attraction order by attraction_id desc limit 1");
 
         if (rst.next()) {
@@ -22,47 +23,61 @@ public class AttractionDAOImpl implements AttractionDAO {
         return "A001"; // return the default ID
     }
 
-    public boolean saveAttraction(AttractionDTO attractionDTO) throws SQLException {
+    @Override
+    public boolean save(Attraction attraction) throws SQLException {
         return SqlUtil.execute(
                 "insert into attraction values (?,?,?,?,?)",
-                attractionDTO.getAttractionId(),
-                attractionDTO.getName(),
-                attractionDTO.getType(),
-                attractionDTO.getOperatingHours(),
-                attractionDTO.getDescription()
+                attraction.getAttractionId(),
+                attraction.getName(),
+                attraction.getType(),
+                attraction.getOperatingHours(),
+                attraction.getDescription()
         );
     }
 
-    public ArrayList<AttractionDTO> getAllAttractions() throws SQLException {
+    @Override
+    public ArrayList<Attraction> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from attraction");
 
-        ArrayList<AttractionDTO> attractionDTOS = new ArrayList<>();
+        ArrayList<Attraction> attractions = new ArrayList<>();
 
         while (rst.next()) {
-            AttractionDTO attractionDTO = new AttractionDTO(
+            Attraction attraction = new Attraction(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4),
                     rst.getString(5)
             );
-            attractionDTOS.add(attractionDTO);
+            attractions.add(attraction);
         }
-        return attractionDTOS;
+        return attractions;
     }
 
-    public boolean updateAttraction(AttractionDTO attractionDTO) throws SQLException {
+    @Override
+    public boolean update(Attraction attraction) throws SQLException {
         return SqlUtil.execute(
                 "update attraction set name=?, type=?, operating_hours=?, description=? where attraction_id=?",
-                attractionDTO.getName(),
-                attractionDTO.getType(),
-                attractionDTO.getOperatingHours(),
-                attractionDTO.getDescription(),
-                attractionDTO.getAttractionId()
+                attraction.getName(),
+                attraction.getType(),
+                attraction.getOperatingHours(),
+                attraction.getDescription(),
+                attraction.getAttractionId()
         );
     }
 
-    public boolean deleteAttraction(String attractionId) throws SQLException {
+    @Override
+    public boolean delete(String attractionId) throws SQLException {
         return SqlUtil.execute("delete from attraction where attraction_id=?", attractionId);
+    }
+
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Attraction findById(String selectedId) throws SQLException {
+        return null;
     }
 }

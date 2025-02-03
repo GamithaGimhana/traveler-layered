@@ -2,7 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.VehicleDAO;
-import lk.ijse.gdse.traveler.dto.VehicleDTO;
+import lk.ijse.gdse.traveler.entity.Vehicle;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class VehicleDAOImpl implements VehicleDAO {
 
-    public String getNextVehicleId() throws SQLException {
+    @Override
+    public String getNextId() throws SQLException {
         ResultSet rst = SqlUtil.execute("select vehicle_id from vehicle order by vehicle_id desc limit 1");
 
         if (rst.next()) {
@@ -23,7 +24,8 @@ public class VehicleDAOImpl implements VehicleDAO {
         return "V001"; // return the default ID
     }
 
-    public boolean saveVehicle(VehicleDTO vehicleDTO) throws SQLException {
+    @Override
+    public boolean save(Vehicle vehicleDTO) throws SQLException {
         return SqlUtil.execute(
                 "insert into vehicle values (?,?,?,?,?,?)",
                 vehicleDTO.getVehicleId(),
@@ -35,13 +37,14 @@ public class VehicleDAOImpl implements VehicleDAO {
         );
     }
 
-    public ArrayList<VehicleDTO> getAllVehicles() throws SQLException {
+    @Override
+    public ArrayList<Vehicle> getAll() throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from vehicle");
 
-        ArrayList<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
 
         while (rst.next()) {
-            VehicleDTO vehicleDTO = new VehicleDTO(
+            Vehicle vehicle = new Vehicle(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -49,28 +52,36 @@ public class VehicleDAOImpl implements VehicleDAO {
                     rst.getDouble(5),
                     rst.getBoolean(6)
             );
-            vehicleDTOS.add(vehicleDTO);
+            vehicles.add(vehicle);
         }
-        return vehicleDTOS;
+        return vehicles;
     }
 
-    public boolean updateVehicle(VehicleDTO vehicleDTO) throws SQLException {
+    @Override
+    public boolean update(Vehicle vehicle) throws SQLException {
         return SqlUtil.execute(
                 "update vehicle set vehicle_type=?, model=?, license_plate_number=?, daily_price=?, availability_status=? where vehicle_id=?",
-                vehicleDTO.getVehicleType(),
-                vehicleDTO.getModel(),
-                vehicleDTO.getLicensePlateNumber(),
-                vehicleDTO.getDailyPrice(),
-                vehicleDTO.isAvailabilityStatus(),
-                vehicleDTO.getVehicleId()
+                vehicle.getVehicleType(),
+                vehicle.getModel(),
+                vehicle.getLicensePlateNumber(),
+                vehicle.getDailyPrice(),
+                vehicle.isAvailabilityStatus(),
+                vehicle.getVehicleId()
         );
     }
 
-    public boolean deleteVehicle(String vehicleId) throws SQLException {
+    @Override
+    public boolean delete(String vehicleId) throws SQLException {
         return SqlUtil.execute("delete from vehicle where vehicle_id=?", vehicleId);
     }
 
-    public ArrayList<String> getAllVehicleIds(String selectedVehicleModel) throws SQLException {
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getAllIds(String selectedVehicleModel) throws SQLException {
         ResultSet rst = SqlUtil.execute("select vehicle_id from vehicle where model=? and availability_status=true", selectedVehicleModel);
 
         ArrayList<String> vehicleIds = new ArrayList<>();
@@ -82,7 +93,8 @@ public class VehicleDAOImpl implements VehicleDAO {
         return vehicleIds;
     }
 
-    public ArrayList<String> getAllVehicleTypes() throws SQLException {
+    @Override
+    public ArrayList<String> getAllTypes() throws SQLException {
         ResultSet rst = SqlUtil.execute("select vehicle_type from vehicle");
 
         ArrayList<String> vehicleTypes = new ArrayList<>();
@@ -94,7 +106,8 @@ public class VehicleDAOImpl implements VehicleDAO {
         return vehicleTypes;
     }
 
-    public ArrayList<String> getAllVehicleModels(String selectedVehicleType) throws SQLException {
+    @Override
+    public ArrayList<String> getAllModels(String selectedVehicleType) throws SQLException {
         ResultSet rst = SqlUtil.execute("select model from vehicle where vehicle_type = ?", selectedVehicleType);
 
         ArrayList<String> vehicleModels = new ArrayList<>();
@@ -106,11 +119,12 @@ public class VehicleDAOImpl implements VehicleDAO {
         return vehicleModels;
     }
 
-    public VehicleDTO findById(String selectedVehicleId) throws SQLException {
+    @Override
+    public Vehicle findById(String selectedVehicleId) throws SQLException {
         ResultSet rst = SqlUtil.execute("select * from vehicle where vehicle_id=?", selectedVehicleId);
 
         if (rst.next()) {
-            return new VehicleDTO(
+            return new Vehicle(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -122,7 +136,8 @@ public class VehicleDAOImpl implements VehicleDAO {
         return null;
     }
 
-    public boolean updateVehicleList(String vehicleId, boolean status) throws SQLException {
+    @Override
+    public boolean updateList(String vehicleId, boolean status) throws SQLException {
         System.out.println("Vehicle is updated");
         return SqlUtil.execute(
                 "update vehicle set availability_status = ? where vehicle_id = ?",
