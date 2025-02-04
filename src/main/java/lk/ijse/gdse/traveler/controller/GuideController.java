@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
-import lk.ijse.gdse.traveler.dto.tm.GuideTM;
+import lk.ijse.gdse.traveler.view.tdm.GuideTM;
 import lk.ijse.gdse.traveler.model.GuideModel;
 
 import java.io.IOException;

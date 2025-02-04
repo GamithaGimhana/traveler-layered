@@ -2,7 +2,6 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.HealthcareDAO;
-import lk.ijse.gdse.traveler.dto.HealthcareDTO;
 import lk.ijse.gdse.traveler.entity.Healthcare;
 
 import java.sql.ResultSet;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 public class HealthcareDAOImpl implements HealthcareDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select healthcare_id from healthcare order by healthcare_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +24,7 @@ public class HealthcareDAOImpl implements HealthcareDAO {
     }
 
     @Override
-    public boolean save(Healthcare healthcare) throws SQLException {
+    public boolean save(Healthcare healthcare) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into healthcare values (?,?,?,?)",
                 healthcare.getHealthcareId(),
@@ -36,7 +35,7 @@ public class HealthcareDAOImpl implements HealthcareDAO {
     }
 
     @Override
-    public ArrayList<Healthcare> getAll() throws SQLException {
+    public ArrayList<Healthcare> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from healthcare");
 
         ArrayList<Healthcare> healthcares = new ArrayList<>();
@@ -54,7 +53,7 @@ public class HealthcareDAOImpl implements HealthcareDAO {
     }
 
     @Override
-    public boolean update(Healthcare healthcare) throws SQLException {
+    public boolean update(Healthcare healthcare) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update healthcare set name=?, contact_info=?, emergency_services=? where healthcare_id=?",
                 healthcare.getName(),
@@ -65,7 +64,7 @@ public class HealthcareDAOImpl implements HealthcareDAO {
     }
 
     @Override
-    public boolean delete(String healthcareId) throws SQLException {
+    public boolean delete(String healthcareId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from healthcare where healthcare_id=?", healthcareId);
     }
 

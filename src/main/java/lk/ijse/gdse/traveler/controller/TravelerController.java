@@ -17,7 +17,7 @@ import javafx.stage.Window;
 import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.TravelerDAOImpl;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
-import lk.ijse.gdse.traveler.dto.tm.TravelerTM;
+import lk.ijse.gdse.traveler.view.tdm.TravelerTM;
 import lk.ijse.gdse.traveler.model.TravelerModel;
 
 import java.io.IOException;

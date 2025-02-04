@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class AttractionDAOImpl implements AttractionDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select attraction_id from attraction order by attraction_id desc limit 1");
 
         if (rst.next()) {
@@ -24,7 +24,7 @@ public class AttractionDAOImpl implements AttractionDAO {
     }
 
     @Override
-    public boolean save(Attraction attraction) throws SQLException {
+    public boolean save(Attraction attraction) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into attraction values (?,?,?,?,?)",
                 attraction.getAttractionId(),
@@ -36,7 +36,7 @@ public class AttractionDAOImpl implements AttractionDAO {
     }
 
     @Override
-    public ArrayList<Attraction> getAll() throws SQLException {
+    public ArrayList<Attraction> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from attraction");
 
         ArrayList<Attraction> attractions = new ArrayList<>();
@@ -55,7 +55,7 @@ public class AttractionDAOImpl implements AttractionDAO {
     }
 
     @Override
-    public boolean update(Attraction attraction) throws SQLException {
+    public boolean update(Attraction attraction) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update attraction set name=?, type=?, operating_hours=?, description=? where attraction_id=?",
                 attraction.getName(),
@@ -67,7 +67,7 @@ public class AttractionDAOImpl implements AttractionDAO {
     }
 
     @Override
-    public boolean delete(String attractionId) throws SQLException {
+    public boolean delete(String attractionId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from attraction where attraction_id=?", attractionId);
     }
 

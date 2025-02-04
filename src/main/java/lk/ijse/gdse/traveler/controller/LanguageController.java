@@ -10,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
-import lk.ijse.gdse.traveler.dto.tm.LanguagesTM;
+import lk.ijse.gdse.traveler.view.tdm.LanguagesTM;
 import lk.ijse.gdse.traveler.model.LanguageModel;
 
 import java.net.URL;

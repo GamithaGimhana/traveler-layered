@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class RequestDAOImpl implements RequestDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select request_id from request order by request_id desc limit 1");
 
         if (rst.next()) {
@@ -24,7 +24,7 @@ public class RequestDAOImpl implements RequestDAO {
     }
 
     @Override
-    public boolean save(Request request) throws SQLException {
+    public boolean save(Request request) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into request values (?,?,?,?,?)",
                 request.getRequestId(),
@@ -36,7 +36,7 @@ public class RequestDAOImpl implements RequestDAO {
     }
 
     @Override
-    public ArrayList<Request> getAll() throws SQLException {
+    public ArrayList<Request> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from request");
 
         ArrayList<Request> requests = new ArrayList<>();
@@ -60,7 +60,7 @@ public class RequestDAOImpl implements RequestDAO {
     }
 
     @Override
-    public boolean delete(String requestId) throws SQLException {
+    public boolean delete(String requestId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from request where request_id=?", requestId);
     }
 
@@ -70,7 +70,7 @@ public class RequestDAOImpl implements RequestDAO {
     }
 
     @Override
-    public ArrayList<String> getAllIds(String selectedTravelerId) throws SQLException {
+    public ArrayList<String> getAllIds(String selectedTravelerId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select request_id from request where traveler_id=?", selectedTravelerId);
 
         ArrayList<String> requestIds = new ArrayList<>();
@@ -83,7 +83,7 @@ public class RequestDAOImpl implements RequestDAO {
     }
 
     @Override
-    public Request findById(String selectedRequestId) throws SQLException {
+    public Request findById(String selectedRequestId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from request where request_id=?", selectedRequestId);
 
         if (rst.next()) {

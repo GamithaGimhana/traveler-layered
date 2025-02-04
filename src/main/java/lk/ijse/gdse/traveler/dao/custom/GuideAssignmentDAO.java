@@ -7,5 +7,5 @@ import java.sql.SQLException;
 
 public interface GuideAssignmentDAO extends CrudDAO<GuideAssignment> {
 //    public boolean saveGuideAssignment(GuideAssignmentDTO guideAssignmentDTO) throws SQLException;
-    public boolean checkRequestIdExists(String requestId) throws SQLException;
+    public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException;
 }

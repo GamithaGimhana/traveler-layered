@@ -12,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
 import lk.ijse.gdse.traveler.dto.GuideLanguagesDTO;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
-import lk.ijse.gdse.traveler.dto.tm.GuideLanguagesTM;
+import lk.ijse.gdse.traveler.view.tdm.GuideLanguagesTM;
 import lk.ijse.gdse.traveler.model.GuideLanguagesModel;
 import lk.ijse.gdse.traveler.model.GuideModel;
 import lk.ijse.gdse.traveler.model.LanguageModel;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class AccomodationDAOImpl implements AccomodationDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select accommodation_id from accommodation order by accommodation_id desc limit 1");
 
         if (rst.next()) {
@@ -24,7 +24,7 @@ public class AccomodationDAOImpl implements AccomodationDAO {
     }
 
     @Override
-    public boolean save(Accomodation accomodation) throws SQLException {
+    public boolean save(Accomodation accomodation) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into accommodation values (?,?,?,?)",
                 accomodation.getAccomodationId(),
@@ -35,7 +35,7 @@ public class AccomodationDAOImpl implements AccomodationDAO {
     }
 
     @Override
-    public ArrayList<Accomodation> getAll() throws SQLException {
+    public ArrayList<Accomodation> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from accommodation");
 
         ArrayList<Accomodation> accomodations = new ArrayList<>();
@@ -53,7 +53,7 @@ public class AccomodationDAOImpl implements AccomodationDAO {
     }
 
     @Override
-    public boolean update(Accomodation accomodation) throws SQLException {
+    public boolean update(Accomodation accomodation) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update accommodation set name=?, type=?, contact_number=? where accommodation_id=?",
                 accomodation.getName(),
@@ -64,7 +64,7 @@ public class AccomodationDAOImpl implements AccomodationDAO {
     }
 
     @Override
-    public boolean delete(String accommodationId) throws SQLException {
+    public boolean delete(String accommodationId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from accommodation where accommodation_id=?", accommodationId);
     }
 

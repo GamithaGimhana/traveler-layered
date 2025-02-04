@@ -86,7 +86,7 @@ public class VehicleRentDAOImpl implements VehicleRentDAO {
         return null;
     }
 
-    public boolean checkRequestIdExists(String requestId) throws SQLException {
+    public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException {
         String query = "SELECT COUNT(*) FROM request WHERE request_id = ?";
         ResultSet rs = SqlUtil.execute(query, requestId);
         if (rs.next()) {

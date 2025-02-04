@@ -15,7 +15,7 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     }
 
     @Override
-    public boolean save(GuideLanguages guideLanguages) throws SQLException {
+    public boolean save(GuideLanguages guideLanguages) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into guide_languages values (?,?)",
                 guideLanguages.getGuideId(),
@@ -24,7 +24,7 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     }
 
     @Override
-    public ArrayList<GuideLanguages> getAll() throws SQLException {
+    public ArrayList<GuideLanguages> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide_languages");
 
         ArrayList<GuideLanguages> guideLanguages = new ArrayList<>();
@@ -40,7 +40,7 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     }
 
     @Override
-    public boolean update(GuideLanguages guideLanguages) throws SQLException {
+    public boolean update(GuideLanguages guideLanguages) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update guide_languages set guide_id=? where language_id=?",
                 guideLanguages.getGuideId(),
@@ -49,12 +49,12 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     }
 
     @Override
-    public boolean delete(String guideLangId) throws SQLException {
+    public boolean delete(String guideLangId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from guide_languages where language_id=?", guideLangId);
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select language_id from guide_languages");
 
         ArrayList<String> guideLanguageIds = new ArrayList<>();
@@ -67,7 +67,7 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     }
 
     @Override
-    public GuideLanguages findById(String selectedGuideLanguageId) throws SQLException {
+    public GuideLanguages findById(String selectedGuideLanguageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide_languages where language_id=?", selectedGuideLanguageId);
 
         if (rst.next()) {

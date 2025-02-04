@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.entity;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 @Getter
@@ -9,7 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Request {
+public class Request implements Serializable {
     private String requestId;
     private String travelerId;
     private Date requestDate;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class VehicleDAOImpl implements VehicleDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select vehicle_id from vehicle order by vehicle_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +25,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public boolean save(Vehicle vehicleDTO) throws SQLException {
+    public boolean save(Vehicle vehicleDTO) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into vehicle values (?,?,?,?,?,?)",
                 vehicleDTO.getVehicleId(),
@@ -38,7 +38,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public ArrayList<Vehicle> getAll() throws SQLException {
+    public ArrayList<Vehicle> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from vehicle");
 
         ArrayList<Vehicle> vehicles = new ArrayList<>();
@@ -58,7 +58,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public boolean update(Vehicle vehicle) throws SQLException {
+    public boolean update(Vehicle vehicle) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update vehicle set vehicle_type=?, model=?, license_plate_number=?, daily_price=?, availability_status=? where vehicle_id=?",
                 vehicle.getVehicleType(),
@@ -71,7 +71,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public boolean delete(String vehicleId) throws SQLException {
+    public boolean delete(String vehicleId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from vehicle where vehicle_id=?", vehicleId);
     }
 
@@ -81,7 +81,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public ArrayList<String> getAllIds(String selectedVehicleModel) throws SQLException {
+    public ArrayList<String> getAllIds(String selectedVehicleModel) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select vehicle_id from vehicle where model=? and availability_status=true", selectedVehicleModel);
 
         ArrayList<String> vehicleIds = new ArrayList<>();
@@ -94,7 +94,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public ArrayList<String> getAllTypes() throws SQLException {
+    public ArrayList<String> getAllTypes() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select vehicle_type from vehicle");
 
         ArrayList<String> vehicleTypes = new ArrayList<>();
@@ -107,7 +107,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public ArrayList<String> getAllModels(String selectedVehicleType) throws SQLException {
+    public ArrayList<String> getAllModels(String selectedVehicleType) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select model from vehicle where vehicle_type = ?", selectedVehicleType);
 
         ArrayList<String> vehicleModels = new ArrayList<>();
@@ -120,7 +120,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public Vehicle findById(String selectedVehicleId) throws SQLException {
+    public Vehicle findById(String selectedVehicleId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from vehicle where vehicle_id=?", selectedVehicleId);
 
         if (rst.next()) {
@@ -137,7 +137,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public boolean updateList(String vehicleId, boolean status) throws SQLException {
+    public boolean updateList(String vehicleId, boolean status) throws SQLException, ClassNotFoundException {
         System.out.println("Vehicle is updated");
         return SqlUtil.execute(
                 "update vehicle set availability_status = ? where vehicle_id = ?",

@@ -2,12 +2,14 @@ package lk.ijse.gdse.traveler.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CashierDTO {
+public class CashierDTO implements Serializable {
     private String cashierId;
     private String name;
     private String email;

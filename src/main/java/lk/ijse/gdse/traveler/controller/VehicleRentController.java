@@ -12,7 +12,7 @@ import javafx.util.StringConverter;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.dto.VehicleRentDTO;
-import lk.ijse.gdse.traveler.dto.tm.BookVehicleTM;
+import lk.ijse.gdse.traveler.view.tdm.BookVehicleTM;
 import lk.ijse.gdse.traveler.model.TravelerModel;
 import lk.ijse.gdse.traveler.model.VehicleModel;
 import lk.ijse.gdse.traveler.model.VehicleRentModel;

@@ -12,9 +12,9 @@ public interface VehicleDAO extends CrudDAO<Vehicle> {
 //    public ArrayList<VehicleDTO> getAllVehicles() throws SQLException;
 //    public boolean updateVehicle(VehicleDTO vehicleDTO) throws SQLException;
 //    public boolean deleteVehicle(String vehicleId) throws SQLException;
-    public ArrayList<String> getAllIds(String selectedVehicleModel) throws SQLException;
-    public ArrayList<String> getAllTypes() throws SQLException;
-    public ArrayList<String> getAllModels(String selectedVehicleType) throws SQLException;
+    public ArrayList<String> getAllIds(String selectedVehicleModel) throws SQLException, ClassNotFoundException;
+    public ArrayList<String> getAllTypes() throws SQLException, ClassNotFoundException;
+    public ArrayList<String> getAllModels(String selectedVehicleType) throws SQLException, ClassNotFoundException;
 //    public VehicleDTO findById(String selectedVehicleId) throws SQLException;
-    public boolean updateList(String vehicleId, boolean status) throws SQLException;
+    public boolean updateList(String vehicleId, boolean status) throws SQLException, ClassNotFoundException;
 }

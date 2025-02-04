@@ -16,7 +16,7 @@ public class TripDAOImpl implements TripDAO {
     private final DriverDAOImpl driverDaoImpl = new DriverDAOImpl();
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select trip_id from trip order by trip_id desc limit 1");
 
         if (rst.next()) {
@@ -54,7 +54,7 @@ public class TripDAOImpl implements TripDAO {
                 System.out.println("Trip Saved");
                 // @isOrderDetailListSaved: Saves the list of order details
                 boolean isVehicleUpdated = vehicleDaoImpl.updateList(trip.getVehicleId(), trip.isTripStatus());
-                boolean isGuideUpdated = guideDaoImpl.updateGuideList(trip.getGuideId(), trip.isTripStatus());
+                boolean isGuideUpdated = guideDaoImpl.updateList(trip.getGuideId(), trip.isTripStatus());
                 boolean isDriverUpdated = driverDaoImpl.updateDriverList(trip.getDriverId(), trip.isTripStatus());
 
                 if (isVehicleUpdated && isGuideUpdated && isDriverUpdated) {
@@ -102,7 +102,7 @@ public class TripDAOImpl implements TripDAO {
         return null;
     }
 
-    public boolean checkRequestIdExists(String requestId) throws SQLException {
+    public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException {
         String query = "SELECT COUNT(*) FROM request WHERE request_id = ?";
         ResultSet rs = SqlUtil.execute(query, requestId);
         if (rs.next()) {

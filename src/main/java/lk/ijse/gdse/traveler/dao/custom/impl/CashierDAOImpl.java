@@ -2,7 +2,6 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.CashierDAO;
-import lk.ijse.gdse.traveler.dto.CashierDTO;
 import lk.ijse.gdse.traveler.entity.Cashier;
 
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 public class CashierDAOImpl implements CashierDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select cashier_id from cashier order by cashier_id desc limit 1");
 
         if (rst.next()) {
@@ -26,7 +25,7 @@ public class CashierDAOImpl implements CashierDAO {
     }
 
     @Override
-    public boolean save(Cashier cashier) throws SQLException {
+    public boolean save(Cashier cashier) throws SQLException, ClassNotFoundException {
         // Validate admin_id
         try {
             System.out.println("Validating Admin ID: " + cashier.getAdminId());
@@ -52,7 +51,7 @@ public class CashierDAOImpl implements CashierDAO {
     }
 
     @Override
-    public ArrayList<Cashier> getAll() throws SQLException {
+    public ArrayList<Cashier> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from cashier");
 
         ArrayList<Cashier> cashiers = new ArrayList<>();
@@ -73,7 +72,7 @@ public class CashierDAOImpl implements CashierDAO {
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select cashier_id from cashier");
 
         ArrayList<String> cashierIds = new ArrayList<>();
@@ -86,7 +85,7 @@ public class CashierDAOImpl implements CashierDAO {
     }
 
     @Override
-    public boolean update(Cashier cashier) throws SQLException {
+    public boolean update(Cashier cashier) throws SQLException, ClassNotFoundException {
         // Validate admin_id
         try {
             System.out.println("Validating Admin ID: " + cashier.getAdminId());
@@ -112,12 +111,12 @@ public class CashierDAOImpl implements CashierDAO {
     }
 
     @Override
-    public boolean delete(String cashierId) throws SQLException {
+    public boolean delete(String cashierId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from cashier where cashier_id=?", cashierId);
     }
 
     @Override
-    public Cashier findById(String selectedCashierId) throws SQLException {
+    public Cashier findById(String selectedCashierId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from cashier where cashier_id=?", selectedCashierId);
 
         if (rst.next()) {

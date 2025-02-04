@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class VehicleRentDTO {
+public class VehicleRentDTO implements Serializable {
     private String requestId;
     private String travelerId;
     private String vehicleId;

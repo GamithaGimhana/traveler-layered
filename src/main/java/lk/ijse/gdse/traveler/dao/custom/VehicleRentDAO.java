@@ -8,5 +8,5 @@ import java.sql.SQLException;
 
 public interface VehicleRentDAO extends CrudDAO<VehicleRent> {
 //    public boolean saveVehicleRent(VehicleRentDTO vehicleRentDTO) throws SQLException;
-    public boolean checkRequestIdExists(String requestId) throws SQLException;
+    public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException;
 }

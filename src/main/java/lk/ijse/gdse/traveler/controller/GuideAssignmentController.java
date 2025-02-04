@@ -10,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import lk.ijse.gdse.traveler.dto.*;
-import lk.ijse.gdse.traveler.dto.tm.BookGuideTM;
+import lk.ijse.gdse.traveler.view.tdm.BookGuideTM;
 import lk.ijse.gdse.traveler.model.GuideAssignmentModel;
 import lk.ijse.gdse.traveler.model.GuideModel;
 import lk.ijse.gdse.traveler.model.LanguageModel;

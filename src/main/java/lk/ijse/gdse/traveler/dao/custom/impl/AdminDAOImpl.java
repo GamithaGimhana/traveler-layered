@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class AdminDAOImpl implements AdminDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select admin_id from admin order by admin_id desc limit 1");
 
         if (rst.next()) {
@@ -24,7 +24,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public boolean save(Admin admin) throws SQLException {
+    public boolean save(Admin admin) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into admin values (?,?,?,?,?,?)",
                 admin.getAdminId(),
@@ -37,7 +37,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public ArrayList<Admin> getAll() throws SQLException {
+    public ArrayList<Admin> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from admin");
 
         ArrayList<Admin> admins = new ArrayList<>();
@@ -57,7 +57,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public boolean update(Admin admin) throws SQLException {
+    public boolean update(Admin admin) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update admin set name=?, email=?, contact_number=?, username=?, password=? where admin_id=?",
                 admin.getName(),
@@ -70,12 +70,12 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public boolean delete(String adminId) throws SQLException {
+    public boolean delete(String adminId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from admin where admin_id=?", adminId);
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select admin_id from admin");
 
         ArrayList<String> adminIds = new ArrayList<>();
@@ -88,7 +88,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public Admin findById(String selectedAdminId) throws SQLException {
+    public Admin findById(String selectedAdminId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from admin where admin_id=?", selectedAdminId);
 
         if (rst.next()) {

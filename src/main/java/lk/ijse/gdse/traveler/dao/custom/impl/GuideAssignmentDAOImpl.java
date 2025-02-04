@@ -39,7 +39,7 @@ public class GuideAssignmentDAOImpl implements GuideAssignmentDAO {
             if (isGuideAssignment) {
                 System.out.println("Guide Assignment Saved");
                 // @isOrderDetailListSaved: Saves the list of order details
-                boolean isGuideUpdated = guideDaoImpl.updateGuideList(guideAssignment.getGuideId(), guideAssignment.isStatus());
+                boolean isGuideUpdated = guideDaoImpl.updateList(guideAssignment.getGuideId(), guideAssignment.isStatus());
                 if (isGuideUpdated) {
                     System.out.println("Guide Updated");
                     // @commit: Commits the transaction if both order and details are saved successfully
@@ -86,7 +86,7 @@ public class GuideAssignmentDAOImpl implements GuideAssignmentDAO {
     }
 
     @Override
-    public boolean checkRequestIdExists(String requestId) throws SQLException {
+    public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException {
         String query = "SELECT COUNT(*) FROM request WHERE request_id = ?";
         ResultSet rs = SqlUtil.execute(query, requestId);
         if (rs.next()) {

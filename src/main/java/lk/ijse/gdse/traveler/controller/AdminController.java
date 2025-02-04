@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
-import lk.ijse.gdse.traveler.dto.tm.AdminTM;
+import lk.ijse.gdse.traveler.view.tdm.AdminTM;
 import lk.ijse.gdse.traveler.model.AdminModel;
 
 import java.io.IOException;

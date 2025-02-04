@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse.traveler.dto.HealthcareDTO;
-import lk.ijse.gdse.traveler.dto.tm.HealthcareTM;
+import lk.ijse.gdse.traveler.view.tdm.HealthcareTM;
 import lk.ijse.gdse.traveler.model.HealthcareModel;
 
 import java.net.URL;

@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
 import lk.ijse.gdse.traveler.dto.RequestDTO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
-import lk.ijse.gdse.traveler.dto.tm.RequestTM;
+import lk.ijse.gdse.traveler.view.tdm.RequestTM;
 import lk.ijse.gdse.traveler.model.CashierModel;
 import lk.ijse.gdse.traveler.model.RequestModel;
 import lk.ijse.gdse.traveler.model.TravelerModel;

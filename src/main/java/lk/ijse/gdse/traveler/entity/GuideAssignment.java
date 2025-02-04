@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.entity;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class GuideAssignment {
+public class GuideAssignment implements Serializable {
     private String requestId;
     private String guideId;
     private String travelerId;

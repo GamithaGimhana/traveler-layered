@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PaymentDTO {
+public class PaymentDTO implements Serializable {
     private String paymentId;
     private String travelerId;
     private String tripId;

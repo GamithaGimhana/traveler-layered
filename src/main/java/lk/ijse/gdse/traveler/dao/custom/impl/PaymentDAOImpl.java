@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class PaymentDAOImpl implements PaymentDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select payment_id from payment order by payment_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +25,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public boolean save(Payment payment) throws SQLException {
+    public boolean save(Payment payment) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into payment values (?,?,?,?,?,?)",
                 payment.getPaymentId(),
@@ -39,7 +39,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public ArrayList<Payment> getAll() throws SQLException {
+    public ArrayList<Payment> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from payment");
 
         ArrayList<Payment> payments = new ArrayList<>();
@@ -60,7 +60,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public boolean update(Payment payment) throws SQLException {
+    public boolean update(Payment payment) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update payment set travelr_id=?, trip_id=?, amount=?, remain_amount=?, payment_date=?, payment_method=? where payment_id=?",
                 payment.getTravelerId(),
@@ -74,7 +74,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public boolean delete(String paymentId) throws SQLException {
+    public boolean delete(String paymentId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from payment where payment_id=?", paymentId);
     }
 
@@ -84,7 +84,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public ArrayList<String> getAllIds(String selectedTraveler) throws SQLException {
+    public ArrayList<String> getAllIds(String selectedTraveler) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select payment_id from payment where traveler_id=?", selectedTraveler);
 
         ArrayList<String> paymentIds = new ArrayList<>();
@@ -97,7 +97,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public Payment findById(String selectedPaymentId) throws SQLException {
+    public Payment findById(String selectedPaymentId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from payment where payment_id=?", selectedPaymentId);
 
         if (rst.next()) {

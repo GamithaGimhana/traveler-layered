@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse.traveler.dto.FoodDTO;
-import lk.ijse.gdse.traveler.dto.tm.FoodTM;
+import lk.ijse.gdse.traveler.view.tdm.FoodTM;
 import lk.ijse.gdse.traveler.model.FoodModel;
 
 import java.net.URL;

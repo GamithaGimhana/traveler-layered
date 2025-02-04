@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import lk.ijse.gdse.traveler.dto.*;
-import lk.ijse.gdse.traveler.dto.tm.BookTripTM;
+import lk.ijse.gdse.traveler.view.tdm.BookTripTM;
 import lk.ijse.gdse.traveler.model.*;
 
 import java.net.URL;

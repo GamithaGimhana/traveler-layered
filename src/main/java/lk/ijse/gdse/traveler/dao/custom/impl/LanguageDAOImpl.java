@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LanguageDAOImpl implements LanguageDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select language_id from languages order by language_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +25,7 @@ public class LanguageDAOImpl implements LanguageDAO {
     }
 
     @Override
-    public boolean save(Language language) throws SQLException {
+    public boolean save(Language language) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into languages values (?,?)",
                 language.getLangId(),
@@ -34,7 +34,7 @@ public class LanguageDAOImpl implements LanguageDAO {
     }
 
     @Override
-    public ArrayList<Language> getAll() throws SQLException {
+    public ArrayList<Language> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from languages");
 
         ArrayList<Language> languages = new ArrayList<>();
@@ -50,7 +50,7 @@ public class LanguageDAOImpl implements LanguageDAO {
     }
 
     @Override
-    public boolean update(Language language) throws SQLException {
+    public boolean update(Language language) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update languages set language_name=? where language_id=?",
                 language.getLanguage(),
@@ -59,12 +59,12 @@ public class LanguageDAOImpl implements LanguageDAO {
     }
 
     @Override
-    public boolean delete(String langId) throws SQLException {
+    public boolean delete(String langId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from languages where language_id=?", langId);
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select language_id from languages");
 
         ArrayList<String> languageIds = new ArrayList<>();
@@ -77,7 +77,7 @@ public class LanguageDAOImpl implements LanguageDAO {
     }
 
     @Override
-    public Language findById(String selectedLanguageId) throws SQLException {
+    public Language findById(String selectedLanguageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from languages where language_id=?", selectedLanguageId);
 
         if (rst.next()) {

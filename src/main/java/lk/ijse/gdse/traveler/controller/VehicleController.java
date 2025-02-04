@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
-import lk.ijse.gdse.traveler.dto.tm.VehicleTM;
+import lk.ijse.gdse.traveler.view.tdm.VehicleTM;
 import lk.ijse.gdse.traveler.model.VehicleModel;
 
 import java.net.URL;

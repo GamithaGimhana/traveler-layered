@@ -12,6 +12,6 @@ public interface RequestDAO extends CrudDAO<Request> {
 //    public boolean saveRequest(RequestDTO requestDTO) throws SQLException;
 //    public ArrayList<RequestDTO> getAllRequests() throws SQLException;
 //    public boolean deleteRequest(String requestId) throws SQLException;
-    public ArrayList<String> getAllIds(String selectedTravelerId) throws SQLException;
+    public ArrayList<String> getAllIds(String selectedTravelerId) throws SQLException, ClassNotFoundException;
 //    public RequestDTO findById(String selectedRequestId) throws SQLException;
 }

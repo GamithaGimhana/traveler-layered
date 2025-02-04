@@ -17,13 +17,12 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
-import lk.ijse.gdse.traveler.dto.tm.CashierTM;
+import lk.ijse.gdse.traveler.view.tdm.CashierTM;
 import lk.ijse.gdse.traveler.model.AdminModel;
 import lk.ijse.gdse.traveler.model.CashierModel;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FoodDAOImpl implements FoodDAO {
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select foodservice_id from food order by foodservice_id desc limit 1");
 
         if (rst.next()) {
@@ -24,7 +24,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public boolean save(Food food) throws SQLException {
+    public boolean save(Food food) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into food values (?,?,?,?)",
                 food.getFoodServiceId(),
@@ -35,7 +35,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public ArrayList<Food> getAll() throws SQLException {
+    public ArrayList<Food> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from food");
 
         ArrayList<Food> foods = new ArrayList<>();
@@ -53,7 +53,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public boolean update(Food food) throws SQLException {
+    public boolean update(Food food) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update food set name=?, cuisine_type=?, contact_info=? where foodservice_id=?",
                 food.getName(),
@@ -64,7 +64,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public boolean delete(String foodId) throws SQLException {
+    public boolean delete(String foodId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from food where foodservice_id=?", foodId);
     }
 

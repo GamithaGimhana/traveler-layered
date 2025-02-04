@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class GuideDAOImpl implements GuideDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select guide_id from guide order by guide_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +25,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public boolean save(Guide guide) throws SQLException {
+    public boolean save(Guide guide) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into guide values (?,?,?,?,?)",
                 guide.getGuideId(),
@@ -37,7 +37,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public ArrayList<Guide> getAll() throws SQLException {
+    public ArrayList<Guide> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide");
 
         ArrayList<Guide> guides = new ArrayList<>();
@@ -56,7 +56,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public boolean update(Guide guide) throws SQLException {
+    public boolean update(Guide guide) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update guide set name=?, license_number=?, contact_number=?, availability_status=? where guide_id=?",
                 guide.getName(),
@@ -68,12 +68,12 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public boolean delete(String guideId) throws SQLException {
+    public boolean delete(String guideId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from guide where guide_id=?", guideId);
     }
 
     @Override
-    public ArrayList<String> getAllIds(String selectedLanguageId) throws SQLException {
+    public ArrayList<String> getAllIds(String selectedLanguageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select g.guide_id from guide g join guide_languages gL on g.guide_id = gL.guide_id where gL.language_id = ? and g.availability_status=true", selectedLanguageId);
 
         ArrayList<String> guideIds = new ArrayList<>();
@@ -86,7 +86,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select guide_id from guide");
 
         ArrayList<String> guideIds = new ArrayList<>();
@@ -99,7 +99,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public Guide findById(String selectedGuideId) throws SQLException {
+    public Guide findById(String selectedGuideId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide where guide_id=?", selectedGuideId);
 
         if (rst.next()) {
@@ -115,7 +115,7 @@ public class GuideDAOImpl implements GuideDAO {
     }
 
     @Override
-    public boolean updateGuideList(String guideId, boolean status) throws SQLException {
+    public boolean updateList(String guideId, boolean status) throws SQLException, ClassNotFoundException {
         System.out.println("Guide is updated");
         return SqlUtil.execute(
                 "update guide set availability_status = ? where guide_id = ?",

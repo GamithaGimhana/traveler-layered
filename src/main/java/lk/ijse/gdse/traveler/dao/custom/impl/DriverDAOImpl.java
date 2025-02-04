@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class DriverDAOImpl implements DriverDAO {
 
     @Override
-    public String getNextId() throws SQLException {
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select driver_id from driver order by driver_id desc limit 1");
 
         if (rst.next()) {
@@ -25,7 +25,7 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public boolean save(Driver driver) throws SQLException {
+    public boolean save(Driver driver) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "insert into driver values (?,?,?,?,?)",
                 driver.getDriverId(),
@@ -37,7 +37,7 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public ArrayList<Driver> getAll() throws SQLException {
+    public ArrayList<Driver> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from driver");
 
         ArrayList<Driver> drivers = new ArrayList<>();
@@ -56,7 +56,7 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public boolean update(Driver driver) throws SQLException {
+    public boolean update(Driver driver) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
                 "update driver set name=?, license_number=?, contact_number=?, availability_status=? where driver_id=?",
                 driver.getName(),
@@ -68,12 +68,12 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public boolean delete(String driverId) throws SQLException {
+    public boolean delete(String driverId) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute("delete from driver where driver_id=?", driverId);
     }
 
     @Override
-    public ArrayList<String> getAllIds() throws SQLException {
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select driver_id from driver where availability_status=true");
 
         ArrayList<String> driverIds = new ArrayList<>();
@@ -86,7 +86,7 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public Driver findById(String selectedDriverId) throws SQLException {
+    public Driver findById(String selectedDriverId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from driver where driver_id=?", selectedDriverId);
 
         if (rst.next()) {
@@ -102,7 +102,7 @@ public class DriverDAOImpl implements DriverDAO {
     }
 
     @Override
-    public boolean updateDriverList(String driverId, boolean status) throws SQLException {
+    public boolean updateDriverList(String driverId, boolean status) throws SQLException, ClassNotFoundException {
         System.out.println("Driver is updated");
         return SqlUtil.execute(
                 "update driver set availability_status = ? where driver_id = ?",

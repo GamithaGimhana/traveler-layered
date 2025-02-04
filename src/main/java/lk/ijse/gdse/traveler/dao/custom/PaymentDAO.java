@@ -13,6 +13,6 @@ public interface PaymentDAO extends CrudDAO<Payment> {
 //    public ArrayList<PaymentDTO> getAllPayments() throws SQLException;
 //    public boolean updatePayment(PaymentDTO paymentDTO) throws SQLException;
 //    public boolean deletePayment(String paymentId) throws SQLException;
-    public ArrayList<String> getAllIds(String selectedTraveler) throws SQLException;
+    public ArrayList<String> getAllIds(String selectedTraveler) throws SQLException, ClassNotFoundException;
 //    public PaymentDTO findById(String selectedPaymentId) throws SQLException;
 }

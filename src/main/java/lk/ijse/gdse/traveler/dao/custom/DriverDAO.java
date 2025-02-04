@@ -15,5 +15,5 @@ public interface DriverDAO extends CrudDAO<Driver> {
 //    public boolean deleteDriver(String driverId) throws SQLException;
 //    public ArrayList<String> getAllDriverIds() throws SQLException;
 //    public DriverDTO findById(String selectedDriverId) throws SQLException;
-    public boolean updateDriverList(String driverId, boolean status) throws SQLException;
+    public boolean updateDriverList(String driverId, boolean status) throws SQLException, ClassNotFoundException;
 }

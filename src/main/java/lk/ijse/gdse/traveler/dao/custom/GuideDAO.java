@@ -12,8 +12,8 @@ public interface GuideDAO extends CrudDAO<Guide> {
 //    public ArrayList<GuideDTO> getAllGuides() throws SQLException;
 //    public boolean updateGuide(GuideDTO guideDTO) throws SQLException;
 //    public boolean deleteGuide(String guideId) throws SQLException;
-    public ArrayList<String> getAllIds(String selectedLanguageId) throws SQLException;
+    public ArrayList<String> getAllIds(String selectedLanguageId) throws SQLException, ClassNotFoundException;
 //    public ArrayList<String> getAllGuideIds() throws SQLException;
 //    public GuideDTO findById(String selectedGuideId) throws SQLException;
-    public boolean updateGuideList(String guideId, boolean status) throws SQLException;
+    public boolean updateList(String guideId, boolean status) throws SQLException, ClassNotFoundException;
 }
