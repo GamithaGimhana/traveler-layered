@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.HealthcareBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dao.custom.HealthcareDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.HealthcareDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HealthcareBOImpl implements HealthcareBO {
-    HealthcareDAO healthcareDAO = new HealthcareDAOImpl();
+//    HealthcareDAO healthcareDAO = new HealthcareDAOImpl();
+    HealthcareDAO healthcareDAO = (HealthcareDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.HEALTHCARE);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return healthcareDAO.getNextId();

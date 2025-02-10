@@ -119,17 +119,21 @@ public class CashierDAOImpl implements CashierDAO {
     public Cashier findById(String selectedCashierId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from cashier where cashier_id=?", selectedCashierId);
 
-        if (rst.next()) {
-            return new Cashier(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getString(5),
-                    rst.getString(6),
-                    rst.getString(7)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Cashier(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getString(5),
+//                    rst.getString(6),
+//                    rst.getString(7)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        Cashier cashier = new Cashier(selectedCashierId, rst.getString("name"), rst.getString("email"), rst.getString("contact_number"), rst.getString("username"), rst.getString("password"), rst.getString("admin_id"));
+        return cashier;
     }
 }

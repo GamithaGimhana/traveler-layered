@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.GuideLanguagesDAO;
+import lk.ijse.gdse.traveler.entity.Driver;
 import lk.ijse.gdse.traveler.entity.GuideLanguages;
 
 import java.sql.ResultSet;
@@ -70,12 +71,16 @@ public class GuideLanguagesDAOImpl implements GuideLanguagesDAO {
     public GuideLanguages findById(String selectedGuideLanguageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide_languages where language_id=?", selectedGuideLanguageId);
 
-        if (rst.next()) {
-            return new GuideLanguages(
-                    rst.getString(1),
-                    rst.getString(2)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new GuideLanguages(
+//                    rst.getString(1),
+//                    rst.getString(2)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        GuideLanguages guideLanguage = new GuideLanguages(selectedGuideLanguageId, rst.getString("language_id"));
+        return guideLanguage;
     }
 }

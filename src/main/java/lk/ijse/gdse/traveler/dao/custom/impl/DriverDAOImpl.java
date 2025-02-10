@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.DriverDAO;
+import lk.ijse.gdse.traveler.entity.Admin;
 import lk.ijse.gdse.traveler.entity.Driver;
 
 import java.sql.ResultSet;
@@ -89,16 +90,20 @@ public class DriverDAOImpl implements DriverDAO {
     public Driver findById(String selectedDriverId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from driver where driver_id=?", selectedDriverId);
 
-        if (rst.next()) {
-            return new Driver(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getBoolean(5)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Driver(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getBoolean(5)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        Driver driver = new Driver(selectedDriverId, rst.getString("name"), rst.getString("license_number"), rst.getString("contact_number"), rst.getBoolean("availability_status"));
+        return driver;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.PaymentBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dao.custom.PaymentDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.PaymentDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PaymentBOImpl implements PaymentBO {
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
+//    PaymentDAO paymentDAO = new PaymentDAOImpl();
+    PaymentDAO paymentDAO = (PaymentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PAYMENT);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

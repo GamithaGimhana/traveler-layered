@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.RequestDAO;
+import lk.ijse.gdse.traveler.entity.GuideLanguages;
 import lk.ijse.gdse.traveler.entity.Request;
 
 import java.sql.ResultSet;
@@ -86,16 +87,21 @@ public class RequestDAOImpl implements RequestDAO {
     public Request findById(String selectedRequestId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from request where request_id=?", selectedRequestId);
 
-        if (rst.next()) {
-            return new Request(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getDate(3),
-                    rst.getString(4),
-                    rst.getString(5)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Request(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getDate(3),
+//                    rst.getString(4),
+//                    rst.getString(5)
+//            );
+//        }
+//        return null;
+
+        rst.next();
+
+        Request request = new Request(selectedRequestId, rst.getString("traveler_id"), rst.getDate("request_date"), rst.getString("request_type"), rst.getString("cashier_id"));
+        return request;
     }
 
 }

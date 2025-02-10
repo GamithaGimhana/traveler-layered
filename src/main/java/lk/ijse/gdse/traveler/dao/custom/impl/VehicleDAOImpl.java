@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.VehicleDAO;
+import lk.ijse.gdse.traveler.entity.Guide;
 import lk.ijse.gdse.traveler.entity.Vehicle;
 
 import java.sql.ResultSet;
@@ -123,17 +124,21 @@ public class VehicleDAOImpl implements VehicleDAO {
     public Vehicle findById(String selectedVehicleId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from vehicle where vehicle_id=?", selectedVehicleId);
 
-        if (rst.next()) {
-            return new Vehicle(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getDouble(5),
-                    rst.getBoolean(6)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Vehicle(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getDouble(5),
+//                    rst.getBoolean(6)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        Vehicle vehicle = new Vehicle(selectedVehicleId, rst.getString("vehicle_type"), rst.getString("model"), rst.getString("license_plate_number"), rst.getDouble("daily_price"), rst.getBoolean("availability_status"));
+        return vehicle;
     }
 
     @Override

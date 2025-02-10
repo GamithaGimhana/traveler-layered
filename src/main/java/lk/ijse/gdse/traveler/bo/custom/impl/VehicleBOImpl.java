@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.VehicleBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.TripDAO;
 import lk.ijse.gdse.traveler.dao.custom.VehicleDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.VehicleDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -15,7 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class VehicleBOImpl implements VehicleBO {
-    VehicleDAO vehicleDAO = new VehicleDAOImpl();
+//    VehicleDAO vehicleDAO = new VehicleDAOImpl();
+    VehicleDAO vehicleDAO = (VehicleDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.VEHICLE);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

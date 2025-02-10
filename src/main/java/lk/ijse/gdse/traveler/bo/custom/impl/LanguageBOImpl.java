@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.LanguageBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dao.custom.LanguageDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.LanguageDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -15,7 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LanguageBOImpl implements LanguageBO {
-    LanguageDAO languageDAO = new LanguageDAOImpl();
+//    LanguageDAO languageDAO = new LanguageDAOImpl();
+    LanguageDAO languageDAO = (LanguageDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.LANGUAGE);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.GuideAssignmentBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.FoodDAO;
 import lk.ijse.gdse.traveler.dao.custom.GuideAssignmentDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.GuideAssignmentDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -12,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuideAssignmentBOImpl implements GuideAssignmentBO {
-    GuideAssignmentDAO guideAssignmentDAO = new GuideAssignmentDAOImpl();
+//    GuideAssignmentDAO guideAssignmentDAO = new GuideAssignmentDAOImpl();
+    GuideAssignmentDAO guideAssignmentDAO = (GuideAssignmentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.GUIDEASSIGNMENT);
 
     @Override
     public boolean save(GuideAssignmentDTO guideAssignmentDTO) throws SQLException, ClassNotFoundException {

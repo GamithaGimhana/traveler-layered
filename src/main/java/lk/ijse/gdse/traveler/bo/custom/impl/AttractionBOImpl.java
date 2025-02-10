@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.AttractionBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
 import lk.ijse.gdse.traveler.dao.custom.AttractionDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.AttractionDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AttractionBOImpl implements AttractionBO {
-    AttractionDAO attractionDAO = new AttractionDAOImpl();
+//    AttractionDAO attractionDAO = new AttractionDAOImpl();
+    AttractionDAO attractionDAO = (AttractionDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.ATTRACTION);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return attractionDAO.getNextId();

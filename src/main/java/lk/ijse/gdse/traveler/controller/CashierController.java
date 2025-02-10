@@ -290,17 +290,38 @@ public class CashierController implements Initializable {
     }
 
     @FXML
+//    void cmbAdminOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+//        String selectedAdminId = cmbAdminId.getSelectionModel().getSelectedItem();
+//        AdminDTO adminDTO = adminBOImpl.findById(selectedAdminId);
+//
+//        // If admin found (adminDTO not null)
+//        if (adminDTO != null) {
+//
+//            // FIll admin related labels
+//            lblAdminName.setText(adminDTO.getName());
+//        }
+//    }
     void cmbAdminOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedAdminId = cmbAdminId.getSelectionModel().getSelectedItem();
+
+        System.out.println(selectedAdminId);
+        // Prevent null selection from causing an error
+        if (selectedAdminId == null || selectedAdminId.isEmpty()) {
+            lblAdminName.setText(""); // Clear label if nothing is selected
+            return;
+        }
+
         AdminDTO adminDTO = adminBOImpl.findById(selectedAdminId);
 
-        // If admin found (adminDTO not null)
         if (adminDTO != null) {
-
-            // FIll admin related labels
             lblAdminName.setText(adminDTO.getName());
+        } else {
+            System.out.println("Admin not found in the database!");
+            lblAdminName.setText(""); // Clear label if admin is not found
         }
     }
+
+
 
     @FXML
     void onClickTable(MouseEvent event) {
@@ -311,7 +332,7 @@ public class CashierController implements Initializable {
             txtEmail.setText(cashierTM.getEmail());
             txtContact.setText(cashierTM.getContactNumber());
             lblUsername.setText(cashierTM.getUsername());
-            cmbAdminId.setValue(cashierTM.getAdminId());
+            cmbAdminId.setPromptText(cashierTM.getAdminId());
 
             btnSave.setDisable(true);
 
@@ -377,14 +398,7 @@ public class CashierController implements Initializable {
                     cashierDTO.getAdminId()
             );
             cashierTMS.add(cashierTM);
-            System.out.println(cashierTM.getCashierId());
-            System.out.println(cashierTM.getName());
-            System.out.println(cashierTM.getEmail());
-            System.out.println(cashierTM.getContactNumber());
-            System.out.println(cashierTM.getUsername());
-            System.out.println(cashierTM.getAdminId());
         }
-
         tblCashier.setItems(cashierTMS);
     }
 

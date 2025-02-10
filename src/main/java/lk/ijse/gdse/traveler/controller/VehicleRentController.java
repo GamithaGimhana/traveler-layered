@@ -425,11 +425,12 @@ public class VehicleRentController implements Initializable {
         });
     }
 
-    private void calculateTotalAmount() {
+    private double calculateTotalAmount() {
         double total = 0;
         for (BookVehicleTM bookVehicleTM : bookVehicleTMS) {
             total += bookVehicleTM.getCost();
         }
         lblTotal.setText(String.valueOf(total));
+        return total;
     }
 }

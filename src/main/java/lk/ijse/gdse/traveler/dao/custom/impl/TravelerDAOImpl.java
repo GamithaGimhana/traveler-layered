@@ -3,6 +3,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
+import lk.ijse.gdse.traveler.entity.Guide;
 import lk.ijse.gdse.traveler.entity.Traveler;
 
 import java.sql.ResultSet;
@@ -92,16 +93,20 @@ public class TravelerDAOImpl implements TravelerDAO {
     public Traveler findById(String selectedTravelerId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from traveler where traveler_id=?", selectedTravelerId);
 
-        if (rst.next()) {
-            return new Traveler(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getString(5),
-                    rst.getString(6)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Traveler(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getString(5),
+//                    rst.getString(6)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        Traveler traveler = new Traveler(selectedTravelerId, rst.getString("name"), rst.getString("email"), rst.getString("contact_number"), rst.getString("nationality"), rst.getString("id_number"));
+        return traveler;
     }
 }

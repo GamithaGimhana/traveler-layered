@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.LanguageDAO;
+import lk.ijse.gdse.traveler.entity.GuideLanguages;
 import lk.ijse.gdse.traveler.entity.Language;
 
 import java.sql.ResultSet;
@@ -80,12 +81,17 @@ public class LanguageDAOImpl implements LanguageDAO {
     public Language findById(String selectedLanguageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from languages where language_id=?", selectedLanguageId);
 
-        if (rst.next()) {
-            return new Language(
-                    rst.getString(1),
-                    rst.getString(2)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Language(
+//                    rst.getString(1),
+//                    rst.getString(2)
+//            );
+//        }
+//        return null;
+
+        rst.next();
+
+        Language language = new Language(selectedLanguageId, rst.getString("language_name"));
+        return language;
     }
 }

@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.GuideBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.FoodDAO;
 import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.GuideDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -15,7 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuideBOImpl implements GuideBO {
-    GuideDAO guideDAO = new GuideDAOImpl();
+//    GuideDAO guideDAO = new GuideDAOImpl();
+    GuideDAO guideDAO = (GuideDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.GUIDE);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

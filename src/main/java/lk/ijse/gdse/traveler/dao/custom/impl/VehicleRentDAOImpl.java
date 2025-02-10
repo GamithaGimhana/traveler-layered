@@ -3,6 +3,8 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.VehicleRentDAO;
 import lk.ijse.gdse.traveler.db.DBConnection;
+import lk.ijse.gdse.traveler.entity.Guide;
+import lk.ijse.gdse.traveler.entity.Vehicle;
 import lk.ijse.gdse.traveler.entity.VehicleRent;
 
 import java.sql.Connection;
@@ -82,8 +84,25 @@ public class VehicleRentDAOImpl implements VehicleRentDAO {
     }
 
     @Override
-    public VehicleRent findById(String selectedId) throws SQLException {
-        return null;
+    public VehicleRent findById(String selectedId) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SqlUtil.execute("select * from rental_transaction where request_id=?", selectedId);
+
+//        if (rst.next()) {
+//            return new VehicleRent(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getDate(4).toLocalDate(),
+//                    rst.getDate(5).toLocalDate(),
+//                    rst.getDouble(6),
+//                    rst.getBoolean(7)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        VehicleRent vehicleRent = new VehicleRent(selectedId, rst.getString("traveler_id"), rst.getString("vehicle_id"), rst.getDate("rental_date").toLocalDate(), rst.getDate("return_date").toLocalDate(), rst.getDouble("rental_cost"), rst.getBoolean("vrental_status"));
+        return vehicleRent;
     }
 
     public boolean checkRequestIdExists(String requestId) throws SQLException, ClassNotFoundException {

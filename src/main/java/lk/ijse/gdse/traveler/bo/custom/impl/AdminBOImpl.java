@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.AdminBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.AccomodationDAO;
 import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.AdminDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -12,7 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminBOImpl implements AdminBO {
-    AdminDAO adminDAO = new AdminDAOImpl();
+//    AdminDAO adminDAO = new AdminDAOImpl();
+    AdminDAO adminDAO = (AdminDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.ADMIN);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return adminDAO.getNextId();
@@ -50,6 +54,7 @@ public class AdminBOImpl implements AdminBO {
 
     @Override
     public AdminDTO findById(String selectedAdminId) throws SQLException, ClassNotFoundException {
+        System.out.println("selectedAdminId: " + selectedAdminId);
         Admin admin = adminDAO.findById(selectedAdminId);
         return new AdminDTO(admin.getAdminId(),admin.getName(), admin.getEmail(), admin.getContactNumber(), admin.getUsername(), admin.getPassword());
     }

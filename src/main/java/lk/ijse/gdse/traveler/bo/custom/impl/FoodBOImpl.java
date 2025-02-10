@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.FoodBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.DriverDAO;
 import lk.ijse.gdse.traveler.dao.custom.FoodDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.FoodDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FoodBOImpl implements FoodBO {
-    FoodDAO foodDAO = new FoodDAOImpl();
+//    FoodDAO foodDAO = new FoodDAOImpl();
+    FoodDAO foodDAO = (FoodDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.FOOD);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return foodDAO.getNextId();

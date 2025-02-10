@@ -8,9 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.gdse.traveler.bo.custom.impl.PaymentBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.RequestBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.PaymentDTO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.view.tdm.PaymentTM;
@@ -18,7 +16,10 @@ import lk.ijse.gdse.traveler.view.tdm.PaymentTM;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -105,6 +106,8 @@ public class PaymentController implements Initializable {
     private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
     private final RequestBOImpl requestBOImpl = new RequestBOImpl();
     private final PaymentBOImpl paymentBOImpl = new PaymentBOImpl();
+    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
 
     private final String[] paymentTypes = {"Cash", "Card"};
 
@@ -176,10 +179,10 @@ public class PaymentController implements Initializable {
     @FXML
     void btnSettleOnAction(ActionEvent event) {
         double paying = Double.parseDouble(txtPaying.getText());
-        double remaining = Double.parseDouble(lblRemaining.getText());
-        double newRemaining = remaining + paying;
+        double amount = Double.parseDouble(lblAmount.getText());
+        double remaining = amount - paying;
 
-        lblRemaining.setText(String.format("%.2f", newRemaining));
+        lblRemaining.setText(String.format("%.2f", remaining));
     }
 
     @FXML
@@ -226,20 +229,65 @@ public class PaymentController implements Initializable {
         }
     }
 
+//    @FXML
+//    void btngeneratePaymentReportOnAction(ActionEvent event) {
+//
+//    }
+//
+//    @FXML
+//    void cmbPTypeOnAction(ActionEvent event) {
+//
+//    }
+//
+//    @FXML
+//    void cmbRIdOnAction(ActionEvent event) throws SQLException {
+//
+//    }
+
     @FXML
     void btngeneratePaymentReportOnAction(ActionEvent event) {
+        try {
+            System.out.println("Generating payment report...");
 
+            // Example logic to generate a report (You may use JasperReports, PDF, or Excel)
+            ArrayList<PaymentDTO> paymentList = paymentBOImpl.getAll();
+
+            if (!paymentList.isEmpty()) {
+                // Generate the report logic here
+                new Alert(Alert.AlertType.INFORMATION, "Payment report generated successfully!").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "No payment records found to generate the report.").show();
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error generating payment report: " + e.getMessage()).show();
+        }
     }
 
     @FXML
     void cmbPTypeOnAction(ActionEvent event) {
+        String selectedPaymentType = cmbPType.getSelectionModel().getSelectedItem();
 
+        if (selectedPaymentType != null) {
+            System.out.println("Selected Payment Type: " + selectedPaymentType);
+        }
     }
 
     @FXML
-    void cmbRIdOnAction(ActionEvent event) throws SQLException {
+    void cmbRIdOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+        String selectedRequestId = cmbRId.getSelectionModel().getSelectedItem();
+        LocalDate pDate = LocalDate.parse(paymentDate.getText());
 
+        if (selectedRequestId != null) {
+            System.out.println("Selected Request ID: " + selectedRequestId);
+
+            double amount = vehicleRentBOImpl.findById(selectedRequestId).getRentalCost();
+
+            lblAmount.setText(String.format("%.2f", amount));
+        }
     }
+
 
     @FXML
     void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
@@ -325,7 +373,7 @@ public class PaymentController implements Initializable {
         try {
             ArrayList<String> travelerIds = requestBOImpl.getAllIds(selectedTravelerId);
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
-            cmbTravelerId.setItems(travelerIdsObservableList);
+            cmbRId.setItems(travelerIdsObservableList);
 
             System.out.println("Request IDs loaded: " + travelerIdsObservableList);
         } catch (SQLException | ClassNotFoundException e) {

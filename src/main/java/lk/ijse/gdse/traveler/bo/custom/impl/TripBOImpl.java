@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.TripBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dao.custom.TripDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.TripDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TripBOImpl implements TripBO {
-    TripDAO tripDAO = new TripDAOImpl();
+//    TripDAO tripDAO = new TripDAOImpl();
+    TripDAO tripDAO = (TripDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.TRIP);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

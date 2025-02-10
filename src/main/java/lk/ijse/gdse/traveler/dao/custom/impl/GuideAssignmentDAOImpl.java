@@ -4,6 +4,7 @@ import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.GuideAssignmentDAO;
 import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.entity.GuideAssignment;
+import lk.ijse.gdse.traveler.entity.GuideLanguages;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -81,8 +82,13 @@ public class GuideAssignmentDAOImpl implements GuideAssignmentDAO {
     }
 
     @Override
-    public GuideAssignment findById(String selectedId) throws SQLException {
-        return null;
+    public GuideAssignment findById(String selectedId) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SqlUtil.execute("select * from guide_assignment where request_id=?", selectedId);
+
+        rst.next();
+
+        GuideAssignment guideAssignment = new GuideAssignment(selectedId, rst.getString("guide_id"), rst.getString("traveler_id"), rst.getDate("start_date").toLocalDate(), rst.getDate("end_date").toLocalDate(), rst.getBoolean("gassignment_status"));
+        return guideAssignment;
     }
 
     @Override

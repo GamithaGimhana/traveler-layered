@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.DriverBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.CashierDAO;
 import lk.ijse.gdse.traveler.dao.custom.DriverDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.DriverDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DriverBOImpl implements DriverBO {
-    DriverDAO driverDAO = new DriverDAOImpl();
+//    DriverDAO driverDAO = new DriverDAOImpl();
+    DriverDAO driverDAO = (DriverDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.DRIVER);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {

@@ -1,8 +1,11 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.RequestBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.PaymentDAO;
 import lk.ijse.gdse.traveler.dao.custom.RequestDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.RequestDAOImpl;
+import lk.ijse.gdse.traveler.db.DBConnection;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
 import lk.ijse.gdse.traveler.dto.PaymentDTO;
@@ -11,11 +14,16 @@ import lk.ijse.gdse.traveler.entity.Language;
 import lk.ijse.gdse.traveler.entity.Payment;
 import lk.ijse.gdse.traveler.entity.Request;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RequestBOImpl implements RequestBO {
-    RequestDAO requestDAO = new RequestDAOImpl();
+//    RequestDAO requestDAO = new RequestDAOImpl();
+    RequestDAO requestDAO = (RequestDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.REQUEST);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return requestDAO.getNextId();
@@ -51,5 +59,4 @@ public class RequestBOImpl implements RequestBO {
         Request request = requestDAO.findById(selectedRequestId);
         return new RequestDTO(request.getRequestId(), request.getTravelerId(), request.getRequestDate(), request.getRequestType(), request.getCashierId());
     }
-
 }

@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
+import lk.ijse.gdse.traveler.entity.Driver;
 import lk.ijse.gdse.traveler.entity.Guide;
 
 import java.sql.ResultSet;
@@ -102,16 +103,20 @@ public class GuideDAOImpl implements GuideDAO {
     public Guide findById(String selectedGuideId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from guide where guide_id=?", selectedGuideId);
 
-        if (rst.next()) {
-            return new Guide(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getBoolean(5)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Guide(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getBoolean(5)
+//            );
+//        }
+//        return null;
+        rst.next();
+
+        Guide guide = new Guide(selectedGuideId, rst.getString("name"), rst.getString("license_number"), rst.getString("contact_number"), rst.getBoolean("availability_status"));
+        return guide;
     }
 
     @Override

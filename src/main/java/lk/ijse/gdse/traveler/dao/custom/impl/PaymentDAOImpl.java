@@ -2,6 +2,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.PaymentDAO;
+import lk.ijse.gdse.traveler.entity.GuideLanguages;
 import lk.ijse.gdse.traveler.entity.Payment;
 
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public boolean save(Payment payment) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
-                "insert into payment values (?,?,?,?,?,?)",
+                "insert into payment values (?,?,?,?,?,?,?)",
                 payment.getPaymentId(),
                 payment.getTravelerId(),
                 payment.getTripId(),
@@ -62,7 +63,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public boolean update(Payment payment) throws SQLException, ClassNotFoundException {
         return SqlUtil.execute(
-                "update payment set travelr_id=?, trip_id=?, amount=?, remain_amount=?, payment_date=?, payment_method=? where payment_id=?",
+                "update payment set traveler_id=?, trip_id=?, amount=?, remain_amount=?, payment_date=?, payment_method=? where payment_id=?",
                 payment.getTravelerId(),
                 payment.getTripId(),
                 payment.getAmount(),
@@ -100,17 +101,22 @@ public class PaymentDAOImpl implements PaymentDAO {
     public Payment findById(String selectedPaymentId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from payment where payment_id=?", selectedPaymentId);
 
-        if (rst.next()) {
-            return new Payment(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getDouble(4),
-                    rst.getDouble(5),
-                    rst.getDate(6).toLocalDate(),
-                    rst.getString(7)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Payment(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getDouble(4),
+//                    rst.getDouble(5),
+//                    rst.getDate(6).toLocalDate(),
+//                    rst.getString(7)
+//            );
+//        }
+//        return null;
+
+        rst.next();
+
+        Payment payment = new Payment(selectedPaymentId, rst.getString("traveler_id"), rst.getString("trip_id"), rst.getDouble("amount"), rst.getDouble("remain_amount"), rst.getDate("payment_date").toLocalDate(), rst.getString("payment_method"));
+        return payment;
     }
 }

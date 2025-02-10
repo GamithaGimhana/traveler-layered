@@ -3,6 +3,7 @@ package lk.ijse.gdse.traveler.dao.custom.impl;
 import lk.ijse.gdse.traveler.dao.SqlUtil;
 import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
 import lk.ijse.gdse.traveler.entity.Admin;
+import lk.ijse.gdse.traveler.entity.Cashier;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,16 +92,21 @@ public class AdminDAOImpl implements AdminDAO {
     public Admin findById(String selectedAdminId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SqlUtil.execute("select * from admin where admin_id=?", selectedAdminId);
 
-        if (rst.next()) {
-            return new Admin(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3),
-                    rst.getString(4),
-                    rst.getString(5),
-                    rst.getString(6)
-            );
-        }
-        return null;
+//        if (rst.next()) {
+//            return new Admin(
+//                    rst.getString(1),
+//                    rst.getString(2),
+//                    rst.getString(3),
+//                    rst.getString(4),
+//                    rst.getString(5),
+//                    rst.getString(6)
+//            );
+//        }
+//        return null;
+
+        rst.next();
+
+        Admin admin = new Admin(selectedAdminId, rst.getString("name"), rst.getString("email"), rst.getString("contact_number"), rst.getString("username"), rst.getString("password"));
+        return admin;
     }
 }

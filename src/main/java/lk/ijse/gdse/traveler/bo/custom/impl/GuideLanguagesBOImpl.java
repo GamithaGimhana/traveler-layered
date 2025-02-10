@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.GuideLanguagesBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.GuideDAO;
 import lk.ijse.gdse.traveler.dao.custom.GuideLanguagesDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.GuideLanguagesDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuideLanguagesBOImpl implements GuideLanguagesBO {
-    GuideLanguagesDAO guideLanguagesDAO = new GuideLanguagesDAOImpl();
+//    GuideLanguagesDAO guideLanguagesDAO = new GuideLanguagesDAOImpl();
+    GuideLanguagesDAO guideLanguagesDAO = (GuideLanguagesDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.GUIDELANGUAGE);
 
     @Override
     public boolean save(GuideLanguagesDTO guideLanguagesDTO) throws SQLException, ClassNotFoundException {

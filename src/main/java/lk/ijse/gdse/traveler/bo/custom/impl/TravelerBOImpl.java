@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.TravelerBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.RequestDAO;
 import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.TravelerDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -13,7 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TravelerBOImpl implements TravelerBO {
-    TravelerDAO travelerDAO = new TravelerDAOImpl();
+//    TravelerDAO travelerDAO = new TravelerDAOImpl();
+    TravelerDAO travelerDAO = (TravelerDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.TRAVELER);
+
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
         return travelerDAO.getNextId();
@@ -52,6 +56,7 @@ public class TravelerBOImpl implements TravelerBO {
 
     @Override
     public TravelerDTO findById(String selectedTravelerId) throws SQLException, ClassNotFoundException {
+        System.out.println("selectedTravelerId: " + selectedTravelerId);
         Traveler traveler = travelerDAO.findById(selectedTravelerId);
         return new TravelerDTO(traveler.getTravelerId(), traveler.getName(), traveler.getEmail(), traveler.getContactNumber(), traveler.getNationality(), traveler.getIdNumber());
     }

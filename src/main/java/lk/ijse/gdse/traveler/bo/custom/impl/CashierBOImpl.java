@@ -1,6 +1,8 @@
 package lk.ijse.gdse.traveler.bo.custom.impl;
 
 import lk.ijse.gdse.traveler.bo.custom.CashierBO;
+import lk.ijse.gdse.traveler.dao.DAOFactory;
+import lk.ijse.gdse.traveler.dao.custom.AdminDAO;
 import lk.ijse.gdse.traveler.dao.custom.CashierDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.CashierDAOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
@@ -14,7 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CashierBOImpl implements CashierBO {
-    CashierDAO cashierDAO = new CashierDAOImpl();
+//    CashierDAO cashierDAO = new CashierDAOImpl();
+    CashierDAO cashierDAO = (CashierDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.CASHIER);
 
     @Override
     public String getNextId() throws SQLException, ClassNotFoundException {
