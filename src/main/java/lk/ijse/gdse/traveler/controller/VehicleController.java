@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.impl.VehicleBOImpl;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.view.tdm.VehicleTM;
-import lk.ijse.gdse.traveler.model.VehicleModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -86,8 +86,10 @@ public class VehicleController implements Initializable {
     @FXML
     private TextField txtDailyPrice;
 
+    VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String vehicleId = lblVehicleId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -95,7 +97,7 @@ public class VehicleController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = vehicleModel.deleteVehicle(vehicleId);
+            boolean isDeleted = vehicleBOImpl.delete(vehicleId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Vehicle deleted...!").show();
@@ -106,7 +108,7 @@ public class VehicleController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String vehicleId = lblVehicleId.getText();
         String type = txtType.getText();
         String model = txtModel.getText();
@@ -151,7 +153,7 @@ public class VehicleController implements Initializable {
                     status
             );
 
-            boolean isSaved = vehicleModel.saveVehicle(vehicleDTO);
+            boolean isSaved = vehicleBOImpl.save(vehicleDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Vehicle saved...!").show();
@@ -162,7 +164,7 @@ public class VehicleController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String vehicleId = lblVehicleId.getText();
         String type = txtType.getText();
         String model = txtModel.getText();
@@ -207,7 +209,7 @@ public class VehicleController implements Initializable {
                     status
             );
 
-            boolean isSaved = vehicleModel.updateVehicle(vehicleDTO);
+            boolean isSaved = vehicleBOImpl.update(vehicleDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Vehicle saved...!").show();
@@ -236,11 +238,11 @@ public class VehicleController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextVehicleId();
         loadTableData();
 
@@ -256,10 +258,8 @@ public class VehicleController implements Initializable {
         chBoxAvailable.setSelected(false);
     }
 
-    VehicleModel vehicleModel = new VehicleModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<VehicleDTO> vehicleDTOS = vehicleModel.getAllVehicles();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<VehicleDTO> vehicleDTOS = vehicleBOImpl.getAll();
 
         ObservableList<VehicleTM> vehicleTMS = FXCollections.observableArrayList();
 
@@ -278,8 +278,8 @@ public class VehicleController implements Initializable {
         tblVehicle.setItems(vehicleTMS);
     }
 
-    public void loadNextVehicleId() throws SQLException {
-        String nextVehicleId = vehicleModel.getNextVehicleId();
+    public void loadNextVehicleId() throws SQLException, ClassNotFoundException {
+        String nextVehicleId = vehicleBOImpl.getNextId();
         lblVehicleId.setText(nextVehicleId);
     }
 

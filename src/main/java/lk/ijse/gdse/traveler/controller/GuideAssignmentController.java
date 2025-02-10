@@ -9,12 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideAssignmentBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
 import lk.ijse.gdse.traveler.dto.*;
 import lk.ijse.gdse.traveler.view.tdm.BookGuideTM;
-import lk.ijse.gdse.traveler.model.GuideAssignmentModel;
-import lk.ijse.gdse.traveler.model.GuideModel;
-import lk.ijse.gdse.traveler.model.LanguageModel;
-import lk.ijse.gdse.traveler.model.TravelerModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -106,10 +106,10 @@ public class GuideAssignmentController implements Initializable {
 
     private String requestId;
 
-    private final TravelerModel travelerModel = new TravelerModel();
-    private final GuideModel guideModel = new GuideModel();
-    private final LanguageModel languageModel = new LanguageModel();
-    private final GuideAssignmentModel guideAssignmentModel = new GuideAssignmentModel();
+    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+    private final GuideAssignmentBOImpl guideAssignmentBOImpl = new GuideAssignmentBOImpl();
 
     private final ObservableList<BookGuideTM> bookGuideTMS = FXCollections.observableArrayList();
 
@@ -167,7 +167,7 @@ public class GuideAssignmentController implements Initializable {
     }
 
     @FXML
-    void btnBookGuideOnAction(ActionEvent event) throws SQLException {
+    void btnBookGuideOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (tblBooking.getItems().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please add guides to the cart!").show();
             return;
@@ -178,7 +178,7 @@ public class GuideAssignmentController implements Initializable {
             String requestId = bookGuideTM.getRequestId();
 
             // Check if request_id exists in the request table
-            if (!guideAssignmentModel.checkRequestIdExists(requestId)) {
+            if (!guideAssignmentBOImpl.checkRequestIdExists(requestId)) {
                 new Alert(Alert.AlertType.ERROR, "Invalid Request ID: " + requestId).show();
                 return;
             }
@@ -196,7 +196,7 @@ public class GuideAssignmentController implements Initializable {
 
         boolean isSaved = true;
         for (GuideAssignmentDTO guideAssignmentDTO : guideAssignmentDTOS) {
-            isSaved &= guideAssignmentModel.saveGuideAssignment(guideAssignmentDTO);
+            isSaved &= guideAssignmentBOImpl.save(guideAssignmentDTO);
         }
 
         if (isSaved) {
@@ -214,18 +214,18 @@ public class GuideAssignmentController implements Initializable {
     }
 
     @FXML
-    void cmbGuideOnAction(ActionEvent event) throws SQLException {
+    void cmbGuideOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedGuideId = cmbGuideId.getSelectionModel().getSelectedItem();
-        GuideDTO guideDTO = guideModel.findById(selectedGuideId);
+        GuideDTO guideDTO = guideBOImpl.findById(selectedGuideId);
         if (guideDTO != null) {
             lblGuideName.setText(guideDTO.getName());
         }
     }
 
     @FXML
-    void cmbLangIdOnAction(ActionEvent event) throws SQLException {
+    void cmbLangIdOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedLanguageId = cmbLangId.getSelectionModel().getSelectedItem();
-        LanguageDTO languageDTO = languageModel.findById(selectedLanguageId);
+        LanguageDTO languageDTO = languageBOImpl.findById(selectedLanguageId);
         if (languageDTO != null) {
             lblLanguage.setText(languageDTO.getLanguage());
         }
@@ -234,9 +234,9 @@ public class GuideAssignmentController implements Initializable {
     }
 
     @FXML
-    void cmbTravelerOnAction(ActionEvent event) throws SQLException {
+    void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedTravelerId = cmbTravelerId.getSelectionModel().getSelectedItem();
-        TravelerDTO travelerDTO = travelerModel.findById(selectedTravelerId);
+        TravelerDTO travelerDTO = travelerBOImpl.findById(selectedTravelerId);
         if (travelerDTO != null) {
             lblTravelerName.setText(travelerDTO.getName());
         }
@@ -310,12 +310,12 @@ public class GuideAssignmentController implements Initializable {
         System.out.println("Loading traveler IDs...");
 
         try {
-            ArrayList<String> travelerIds = travelerModel.getAllTravelerIds();
+            ArrayList<String> travelerIds = travelerBOImpl.getAllIds();
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
             cmbTravelerId.setItems(travelerIdsObservableList);
 
             System.out.println("Traveler IDs loaded: " + travelerIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading traveler IDs: " + e.getMessage()).show();
         }
@@ -325,22 +325,22 @@ public class GuideAssignmentController implements Initializable {
         System.out.println("Loading language IDs...");
 
         try {
-            ArrayList<String> languageIds = languageModel.getAllLangIds();
+            ArrayList<String> languageIds = languageBOImpl.getAllIds();
             ObservableList<String> languageIdsObservableList = FXCollections.observableArrayList(languageIds);
             cmbLangId.setItems(languageIdsObservableList);
 
             System.out.println("language IDs loaded: " + languageIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading language IDs: " + e.getMessage()).show();
         }
     }
 
-    private void loadGuideIds(String selectedLanguageId) throws SQLException {
+    private void loadGuideIds(String selectedLanguageId) throws SQLException, ClassNotFoundException {
         System.out.println("Loading guide IDs...");
 
         try {
-            ArrayList<String> guideIds = guideModel.getAllGuideIds(selectedLanguageId);
+            ArrayList<String> guideIds = guideBOImpl.getAllIds(selectedLanguageId);
             ObservableList<String> guideIdsObservableList = FXCollections.observableArrayList(guideIds);
             cmbGuideId.setItems(guideIdsObservableList);
 

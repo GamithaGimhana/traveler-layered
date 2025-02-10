@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.*;
 import lk.ijse.gdse.traveler.view.tdm.BookTripTM;
-import lk.ijse.gdse.traveler.model.*;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -138,17 +138,17 @@ public class TripController implements Initializable {
 
     private String requestId;
 
-    private final TravelerModel travelerModel = new TravelerModel();
-    private final VehicleModel vehicleModel = new VehicleModel();
-    private final GuideModel guideModel = new GuideModel();
-    private final DriverModel driverModel = new DriverModel();
-    private final LanguageModel languageModel = new LanguageModel();
-    private final TripModel tripModel = new TripModel();
+    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+    private final DriverBOImpl driverBOImpl = new DriverBOImpl();
+    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+    private final TripBOImpl tripBOImpl = new TripBOImpl();
 
     private final ObservableList<BookTripTM> bookTripTMS = FXCollections.observableArrayList();
 
     @FXML
-    void btnAddToBookingOnAction(ActionEvent event) throws SQLException {
+    void btnAddToBookingOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String rId = lblRentalId.getText();
         String tripId = lblTripId.getText();
         String tId = cmbTravelerId.getValue();
@@ -179,7 +179,7 @@ public class TripController implements Initializable {
             return;
         }
 
-        double priceForADay = vehicleModel.findById(selectedVehicleId).getDailyPrice();
+        double priceForADay = vehicleBOImpl.findById(selectedVehicleId).getDailyPrice();
         long rentedDays = ChronoUnit.DAYS.between(startDate, endDate);
         double cost = priceForADay * rentedDays;
 
@@ -222,7 +222,7 @@ public class TripController implements Initializable {
     }
 
     @FXML
-    void btnBookTripOnAction(ActionEvent event) throws SQLException {
+    void btnBookTripOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (tblBooking.getItems().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please add booking to the cart!").show();
             return;
@@ -233,7 +233,7 @@ public class TripController implements Initializable {
             String requestId = bookTripTM.getRequestId();
 
             // Check if request_id exists in the request table
-            if (!tripModel.checkRequestIdExists(requestId)) {
+            if (!tripBOImpl.checkRequestIdExists(requestId)) {
                 new Alert(Alert.AlertType.ERROR, "Invalid Request ID: " + requestId).show();
                 return;
             }
@@ -254,7 +254,7 @@ public class TripController implements Initializable {
 
         boolean isSaved = true;
         for (TripDTO tripDTO : tripDTOS) {
-            isSaved &= tripModel.saveTrip(tripDTO);
+            isSaved &= tripBOImpl.save(tripDTO);
         }
 
         if (isSaved) {
@@ -272,18 +272,18 @@ public class TripController implements Initializable {
     }
 
     @FXML
-    void cmbGuideOnAction(ActionEvent event) throws SQLException{
+    void cmbGuideOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedGuideId = cmbGuideId.getSelectionModel().getSelectedItem();
-        GuideDTO guideDTO = guideModel.findById(selectedGuideId);
+        GuideDTO guideDTO = guideBOImpl.findById(selectedGuideId);
         if (guideDTO != null) {
             lblGuideName.setText(guideDTO.getName());
         }
     }
 
     @FXML
-    void cmbLangIdOnAction(ActionEvent event) throws SQLException {
+    void cmbLangIdOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedLanguageId = cmbLangId.getSelectionModel().getSelectedItem();
-        LanguageDTO languageDTO = languageModel.findById(selectedLanguageId);
+        LanguageDTO languageDTO = languageBOImpl.findById(selectedLanguageId);
         if (languageDTO != null) {
             lblLanguage.setText(languageDTO.getLanguage());
         }
@@ -292,18 +292,18 @@ public class TripController implements Initializable {
     }
 
     @FXML
-    void cmbTravelerOnAction(ActionEvent event) throws SQLException {
+    void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedTravelerId = cmbTravelerId.getSelectionModel().getSelectedItem();
-        TravelerDTO travelerDTO = travelerModel.findById(selectedTravelerId);
+        TravelerDTO travelerDTO = travelerBOImpl.findById(selectedTravelerId);
         if (travelerDTO != null) {
             lblTravelerName.setText(travelerDTO.getName());
         }
     }
 
     @FXML
-    void cmbVIdOnAction(ActionEvent event) throws SQLException {
+    void cmbVIdOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedVehicleId = cmbVId.getSelectionModel().getSelectedItem();
-        VehicleDTO vehicleDTO = vehicleModel.findById(selectedVehicleId);
+        VehicleDTO vehicleDTO = vehicleBOImpl.findById(selectedVehicleId);
         if (vehicleDTO != null) {
             lblLPlate.setText(vehicleDTO.getLicensePlateNumber());
         }
@@ -368,8 +368,8 @@ public class TripController implements Initializable {
         }
     }
 
-    public void loadNextTripId() throws SQLException {
-        String nextTripId = tripModel.getNextTripId();
+    public void loadNextTripId() throws SQLException, ClassNotFoundException {
+        String nextTripId = tripBOImpl.getNextId();
         lblTripId.setText(nextTripId);
     }
 
@@ -397,7 +397,7 @@ public class TripController implements Initializable {
             tblBooking.refresh();
 
             System.out.println("Page refreshed successfully!");
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error refreshing the page: " + e.getMessage()).show();
         }
@@ -407,12 +407,12 @@ public class TripController implements Initializable {
         System.out.println("Loading vehicle IDs for model: " + selectedVehicleModel);
 
         try {
-            ArrayList<String> vehicleIds = vehicleModel.getAllVehicleIds(selectedVehicleModel);
+            ArrayList<String> vehicleIds = vehicleBOImpl.getAllIds(selectedVehicleModel);
             ObservableList<String> vehicleIdObservableList = FXCollections.observableArrayList(vehicleIds);
             cmbVId.setItems(vehicleIdObservableList);
 
             System.out.println("Vehicle IDs loaded: " + vehicleIdObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle IDs: " + e.getMessage()).show();
         }
@@ -422,12 +422,12 @@ public class TripController implements Initializable {
         System.out.println("Loading vehicle models for type: " + selectedVehicleType);
 
         try {
-            ArrayList<String> vehicleModels = vehicleModel.getAllVehicleModels(selectedVehicleType);
+            ArrayList<String> vehicleModels = vehicleBOImpl.getAllModels(selectedVehicleType);
             ObservableList<String> vehicleModelObservableList = FXCollections.observableArrayList(vehicleModels);
             cmbVModel.setItems(vehicleModelObservableList);
 
             System.out.println("Vehicle models loaded: " + vehicleModelObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle models: " + e.getMessage()).show();
         }
@@ -437,12 +437,12 @@ public class TripController implements Initializable {
         System.out.println("Loading traveler IDs...");
 
         try {
-            ArrayList<String> travelerIds = travelerModel.getAllTravelerIds();
+            ArrayList<String> travelerIds = travelerBOImpl.getAllIds();
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
             cmbTravelerId.setItems(travelerIdsObservableList);
 
             System.out.println("Traveler IDs loaded: " + travelerIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading traveler IDs: " + e.getMessage()).show();
         }
@@ -452,12 +452,12 @@ public class TripController implements Initializable {
         System.out.println("Loading vehicle types...");
 
         try {
-            ArrayList<String> vehicleTypes = vehicleModel.getAllVehicleTypes();
+            ArrayList<String> vehicleTypes = vehicleBOImpl.getAllTypes();
             ObservableList<String> vehicleTypeObservableList = FXCollections.observableArrayList(vehicleTypes);
             cmbVType.setItems(vehicleTypeObservableList);
 
             System.out.println("Vehicle types loaded: " + vehicleTypeObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle types: " + e.getMessage()).show();
         }
@@ -467,12 +467,12 @@ public class TripController implements Initializable {
         System.out.println("Loading language IDs...");
 
         try {
-            ArrayList<String> languageIds = languageModel.getAllLangIds();
+            ArrayList<String> languageIds = languageBOImpl.getAllIds();
             ObservableList<String> languageIdsObservableList = FXCollections.observableArrayList(languageIds);
             cmbLangId.setItems(languageIdsObservableList);
 
             System.out.println("language IDs loaded: " + languageIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading language IDs: " + e.getMessage()).show();
         }
@@ -482,12 +482,12 @@ public class TripController implements Initializable {
         System.out.println("Loading guide IDs...");
 
         try {
-            ArrayList<String> guideIds = guideModel.getAllGuideIds(selectedLanguageId);
+            ArrayList<String> guideIds = guideBOImpl.getAllIds(selectedLanguageId);
             ObservableList<String> guideIdsObservableList = FXCollections.observableArrayList(guideIds);
             cmbGuideId.setItems(guideIdsObservableList);
 
             System.out.println("guide IDs loaded: " + guideIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading guide IDs: " + e.getMessage()).show();
         }
@@ -497,12 +497,12 @@ public class TripController implements Initializable {
         System.out.println("Loading driver IDs...");
 
         try {
-            ArrayList<String> driverIds = driverModel.getAllDriverIds();
+            ArrayList<String> driverIds = driverBOImpl.getAllIds();
             ObservableList<String> driverIdsObservableList = FXCollections.observableArrayList(driverIds);
             cmbDriverId.setItems(driverIdsObservableList);
 
             System.out.println("driver IDs loaded: " + driverIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading driver IDs: " + e.getMessage()).show();
         }

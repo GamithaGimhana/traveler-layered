@@ -10,9 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
 import lk.ijse.gdse.traveler.view.tdm.GuideTM;
-import lk.ijse.gdse.traveler.model.GuideModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,8 +68,10 @@ public class GuideController implements Initializable {
     @FXML
     private TextField txtName;
 
+    GuideBOImpl guideBOImpl = new GuideBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = lblGuideId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -77,7 +79,7 @@ public class GuideController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = guideModel.deleteGuide(guideId);
+            boolean isDeleted = guideBOImpl.delete(guideId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide deleted...!").show();
@@ -88,7 +90,7 @@ public class GuideController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = lblGuideId.getText();
         String name = txtName.getText();
         String lic = txtLic.getText();
@@ -131,7 +133,7 @@ public class GuideController implements Initializable {
                     status
             );
 
-            boolean isSaved = guideModel.saveGuide(guideDTO);
+            boolean isSaved = guideBOImpl.save(guideDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide saved...!").show();
@@ -142,7 +144,7 @@ public class GuideController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = lblGuideId.getText();
         String name = txtName.getText();
         String lic = txtLic.getText();
@@ -185,7 +187,7 @@ public class GuideController implements Initializable {
                     status
             );
 
-            boolean isSaved = guideModel.updateGuide(guideDTO);
+            boolean isSaved = guideBOImpl.update(guideDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide updated...!").show();
@@ -223,7 +225,7 @@ public class GuideController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -245,7 +247,7 @@ public class GuideController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextGuideId();
         loadTableData();
 
@@ -260,10 +262,8 @@ public class GuideController implements Initializable {
         chBoxAvailable.setSelected(false);
     }
 
-    GuideModel guideModel = new GuideModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<GuideDTO> guideDTOS = guideModel.getAllGuides();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<GuideDTO> guideDTOS = guideBOImpl.getAll();
 
         ObservableList<GuideTM> guideTMS = FXCollections.observableArrayList();
 
@@ -281,8 +281,8 @@ public class GuideController implements Initializable {
         tblGuide.setItems(guideTMS);
     }
 
-    public void loadNextGuideId() throws SQLException {
-        String nextGuideId = guideModel.getNextGuideId();
+    public void loadNextGuideId() throws SQLException, ClassNotFoundException {
+        String nextGuideId = guideBOImpl.getNextId();
         lblGuideId.setText(nextGuideId);
     }
 

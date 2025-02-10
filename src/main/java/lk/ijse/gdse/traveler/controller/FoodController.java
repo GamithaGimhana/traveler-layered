@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.impl.FoodBOImpl;
 import lk.ijse.gdse.traveler.dto.FoodDTO;
 import lk.ijse.gdse.traveler.view.tdm.FoodTM;
-import lk.ijse.gdse.traveler.model.FoodModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -56,8 +56,10 @@ public class FoodController implements Initializable {
     @FXML
     private TextField txtType;
 
+    FoodBOImpl foodBOImpl = new FoodBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String foodId = lblFoodId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -65,7 +67,7 @@ public class FoodController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = foodModel.deleteFood(foodId);
+            boolean isDeleted = foodBOImpl.delete(foodId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Food deleted...!").show();
@@ -76,7 +78,7 @@ public class FoodController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String foodId = lblFoodId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -110,7 +112,7 @@ public class FoodController implements Initializable {
                     contact
             );
 
-            boolean isSaved = foodModel.saveFood(foodDTO);
+            boolean isSaved = foodBOImpl.save(foodDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Food saved...!").show();
@@ -121,7 +123,7 @@ public class FoodController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String foodId = lblFoodId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -155,7 +157,7 @@ public class FoodController implements Initializable {
                     contact
             );
 
-            boolean isSaved = foodModel.updateFood(foodDTO);
+            boolean isSaved = foodBOImpl.update(foodDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Food updated...!").show();
@@ -182,7 +184,7 @@ public class FoodController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -203,7 +205,7 @@ public class FoodController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextFoodId();
         loadTableData();
 
@@ -217,10 +219,8 @@ public class FoodController implements Initializable {
         txtContact.setText("");
     }
 
-    FoodModel foodModel = new FoodModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<FoodDTO> foodDTOS = foodModel.getAllFoods();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<FoodDTO> foodDTOS = foodBOImpl.getAll();
 
         ObservableList<FoodTM> foodTMS = FXCollections.observableArrayList();
 
@@ -237,8 +237,8 @@ public class FoodController implements Initializable {
         tblFood.setItems(foodTMS);
     }
 
-    public void loadNextFoodId() throws SQLException {
-        String nextFoodId = foodModel.getNextFoodId();
+    public void loadNextFoodId() throws SQLException, ClassNotFoundException {
+        String nextFoodId = foodBOImpl.getNextId();
         lblFoodId.setText(nextFoodId);
     }
 }

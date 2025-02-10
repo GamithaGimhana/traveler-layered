@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.impl.AttractionBOImpl;
 import lk.ijse.gdse.traveler.dto.AttractionDTO;
 import lk.ijse.gdse.traveler.view.tdm.AttractionTM;
-import lk.ijse.gdse.traveler.model.AttractionModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -62,8 +62,10 @@ public class AttractionController implements Initializable {
     @FXML
     private TextField txtType;
 
+    AttractionBOImpl attractionBOImpl = new AttractionBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String attractionId = lblAttractionId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -71,7 +73,7 @@ public class AttractionController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = attractionModel.deleteAttraction(attractionId);
+            boolean isDeleted = attractionBOImpl.delete(attractionId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Attraction deleted...!").show();
@@ -82,7 +84,7 @@ public class AttractionController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String attractionId = lblAttractionId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -113,7 +115,7 @@ public class AttractionController implements Initializable {
                     desc
             );
 
-            boolean isSaved = attractionModel.saveAttraction(attractionDTO);
+            boolean isSaved = attractionBOImpl.save(attractionDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Attraction saved...!").show();
@@ -124,7 +126,7 @@ public class AttractionController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String attractionId = lblAttractionId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -155,7 +157,7 @@ public class AttractionController implements Initializable {
                     desc
             );
 
-            boolean isSaved = attractionModel.updateAttraction(attractionDTO);
+            boolean isSaved = attractionBOImpl.update(attractionDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Attraction update...!").show();
@@ -183,7 +185,7 @@ public class AttractionController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -205,7 +207,7 @@ public class AttractionController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextAttractionId();
         loadTableData();
 
@@ -220,10 +222,8 @@ public class AttractionController implements Initializable {
         txtDesc.setText("");
     }
 
-    AttractionModel attractionModel = new AttractionModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<AttractionDTO> attractionDTOS = attractionModel.getAllAttractions();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<AttractionDTO> attractionDTOS = attractionBOImpl.getAll();
 
         ObservableList<AttractionTM> attractionTMS = FXCollections.observableArrayList();
 
@@ -241,8 +241,8 @@ public class AttractionController implements Initializable {
         tblAttraction.setItems(attractionTMS);
     }
 
-    public void loadNextAttractionId() throws SQLException {
-        String nextAttractionId = attractionModel.getNextAttractionId();
+    public void loadNextAttractionId() throws SQLException, ClassNotFoundException {
+        String nextAttractionId = attractionBOImpl.getNextId();
         lblAttractionId.setText(nextAttractionId);
     }
 }

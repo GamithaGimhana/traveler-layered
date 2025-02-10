@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.impl.DriverBOImpl;
 import lk.ijse.gdse.traveler.dto.DriverDTO;
 import lk.ijse.gdse.traveler.view.tdm.DriverTM;
-import lk.ijse.gdse.traveler.model.DriverModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -62,8 +62,10 @@ public class DriverController implements Initializable {
     @FXML
     private TextField txtName;
 
+    DriverBOImpl driverBOImpl = new DriverBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String driverId = lblDriverId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -71,7 +73,7 @@ public class DriverController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = driverModel.deleteDriver(driverId);
+            boolean isDeleted = driverBOImpl.delete(driverId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Driver deleted...!").show();
@@ -82,7 +84,7 @@ public class DriverController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String driverId = lblDriverId.getText();
         String name = txtName.getText();
         String lic = txtLic.getText();
@@ -125,7 +127,7 @@ public class DriverController implements Initializable {
                     status
             );
 
-            boolean isSaved = driverModel.saveDriver(driverDTO);
+            boolean isSaved = driverBOImpl.save(driverDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Driver saved...!").show();
@@ -136,7 +138,7 @@ public class DriverController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String driverId = lblDriverId.getText();
         String name = txtName.getText();
         String lic = txtLic.getText();
@@ -179,7 +181,7 @@ public class DriverController implements Initializable {
                     status
             );
 
-            boolean isSaved = driverModel.updateDriver(driverDTO);
+            boolean isSaved = driverBOImpl.update(driverDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Driver saved...!").show();
@@ -207,7 +209,7 @@ public class DriverController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -229,7 +231,7 @@ public class DriverController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextDriverId();
         loadTableData();
 
@@ -244,10 +246,8 @@ public class DriverController implements Initializable {
         chBoxAvailable.setSelected(false);
     }
 
-    DriverModel driverModel = new DriverModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<DriverDTO> driverDTOS = driverModel.getAllDrivers();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<DriverDTO> driverDTOS = driverBOImpl.getAll();
 
         ObservableList<DriverTM> driverTMS = FXCollections.observableArrayList();
 
@@ -265,8 +265,8 @@ public class DriverController implements Initializable {
         tblDriver.setItems(driverTMS);
     }
 
-    public void loadNextDriverId() throws SQLException {
-        String nextDriverId = driverModel.getNextDriverId();
+    public void loadNextDriverId() throws SQLException, ClassNotFoundException {
+        String nextDriverId = driverBOImpl.getNextId();
         lblDriverId.setText(nextDriverId);
     }
 }

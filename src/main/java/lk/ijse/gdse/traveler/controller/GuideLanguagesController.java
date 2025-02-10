@@ -9,13 +9,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideLanguagesBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
 import lk.ijse.gdse.traveler.dto.GuideLanguagesDTO;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
 import lk.ijse.gdse.traveler.view.tdm.GuideLanguagesTM;
-import lk.ijse.gdse.traveler.model.GuideLanguagesModel;
-import lk.ijse.gdse.traveler.model.GuideModel;
-import lk.ijse.gdse.traveler.model.LanguageModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -58,11 +58,12 @@ public class GuideLanguagesController implements Initializable {
     @FXML
     private TableView<GuideLanguagesTM> tblGuideLanguage;
 
-    private final LanguageModel languageModel = new LanguageModel();
-    private final GuideModel guideModel = new GuideModel();
+    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+    GuideLanguagesBOImpl guideLanguagesBOImpl = new GuideLanguagesBOImpl();
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = cmbGuideId.getValue();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -70,7 +71,7 @@ public class GuideLanguagesController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = guideLanguagesModel.deleteGLang(guideId);
+            boolean isDeleted = guideLanguagesBOImpl.delete(guideId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide Language deleted...!").show();
@@ -81,7 +82,7 @@ public class GuideLanguagesController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = cmbGuideId.getValue();
         String langId = cmbLanguageId.getValue();
 
@@ -91,7 +92,7 @@ public class GuideLanguagesController implements Initializable {
                     guideId
             );
 
-            boolean isSaved = guideLanguagesModel.saveGLang(guideLanguagesDTO);
+            boolean isSaved = guideLanguagesBOImpl.save(guideLanguagesDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide Language saved...!").show();
@@ -102,7 +103,7 @@ public class GuideLanguagesController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String guideId = cmbGuideId.getValue();
         String langId = cmbLanguageId.getValue();
 
@@ -112,7 +113,7 @@ public class GuideLanguagesController implements Initializable {
                     guideId
             );
 
-            boolean isSaved = guideLanguagesModel.updateGLang(guideLanguagesDTO);
+            boolean isSaved = guideLanguagesBOImpl.update(guideLanguagesDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Guide Language saved...!").show();
@@ -123,18 +124,18 @@ public class GuideLanguagesController implements Initializable {
     }
 
     @FXML
-    void cmbGuideOnAction(ActionEvent event) throws SQLException {
+    void cmbGuideOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedGuideId = cmbGuideId.getSelectionModel().getSelectedItem();
-        GuideDTO guideDTO = guideModel.findById(selectedGuideId);
+        GuideDTO guideDTO = guideBOImpl.findById(selectedGuideId);
         if (guideDTO != null) {
             lblGuideName.setText(guideDTO.getName());
         }
     }
 
     @FXML
-    void cmbLangOnAction(ActionEvent event) throws SQLException {
+    void cmbLangOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedLanguageId = cmbLanguageId.getSelectionModel().getSelectedItem();
-        LanguageDTO languageDTO = languageModel.findById(selectedLanguageId);
+        LanguageDTO languageDTO = languageBOImpl.findById(selectedLanguageId);
         if (languageDTO != null) {
             lblLanguage.setText(languageDTO.getLanguage());
         }
@@ -157,7 +158,7 @@ public class GuideLanguagesController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -177,7 +178,7 @@ public class GuideLanguagesController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadLanguageIds();
         loadTableData();
 
@@ -189,10 +190,8 @@ public class GuideLanguagesController implements Initializable {
         lblLanguage.setText("");
     }
 
-    GuideLanguagesModel guideLanguagesModel = new GuideLanguagesModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<GuideLanguagesDTO> guideLanguagesDTOS = guideLanguagesModel.getAllGLanguages();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<GuideLanguagesDTO> guideLanguagesDTOS = guideLanguagesBOImpl.getAll();
 
         ObservableList<GuideLanguagesTM> guideLanguagesTMS = FXCollections.observableArrayList();
 
@@ -211,12 +210,12 @@ public class GuideLanguagesController implements Initializable {
         System.out.println("Loading language IDs...");
 
         try {
-            ArrayList<String> langIds = languageModel.getAllLangIds();
+            ArrayList<String> langIds = languageBOImpl.getAllIds();
             ObservableList<String> langIdsObservableList = FXCollections.observableArrayList(langIds);
             cmbLanguageId.setItems(langIdsObservableList);
 
             System.out.println("Language IDs loaded: " + langIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading languages IDs: " + e.getMessage()).show();
         }
@@ -226,12 +225,12 @@ public class GuideLanguagesController implements Initializable {
         System.out.println("Loading guide IDs...");
 
         try {
-            ArrayList<String> guideIds = guideModel.getAllGuideIds(selectedLanguageId);
+            ArrayList<String> guideIds = guideBOImpl.getAllIds(selectedLanguageId);
             ObservableList<String> guideIdsObservableList = FXCollections.observableArrayList(guideIds);
             cmbGuideId.setItems(guideIdsObservableList);
 
             System.out.println("Guide IDs loaded: " + guideIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading guide IDs: " + e.getMessage()).show();
         }
@@ -241,12 +240,12 @@ public class GuideLanguagesController implements Initializable {
         System.out.println("Loading guide IDs...");
 
         try {
-            ArrayList<String> guideIds = guideModel.getAllGuideIds();
+            ArrayList<String> guideIds = guideBOImpl.getAllIds();
             ObservableList<String> guideIdsObservableList = FXCollections.observableArrayList(guideIds);
             cmbGuideId.setItems(guideIdsObservableList);
 
             System.out.println("Guide IDs loaded: " + guideIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading guide IDs: " + e.getMessage()).show();
         }

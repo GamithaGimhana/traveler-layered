@@ -15,9 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
 import lk.ijse.gdse.traveler.view.tdm.AdminTM;
-import lk.ijse.gdse.traveler.model.AdminModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -96,8 +96,10 @@ public class AdminController implements Initializable {
     @FXML
     private PasswordField txtPassword;
 
+    AdminBOImpl adminBOImpl = new AdminBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String adminId = lblAdminId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -105,7 +107,7 @@ public class AdminController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = adminModel.deleteAdmin(adminId);
+            boolean isDeleted = adminBOImpl.delete(adminId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Admin deleted...!").show();
@@ -116,7 +118,7 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String adminId = lblAdminId.getText();
         String name = txtName.getText();
         String email = txtEmail.getText();
@@ -180,7 +182,7 @@ public class AdminController implements Initializable {
                     password
             );
 
-            boolean isSaved = adminModel.saveAdmin(adminDTO);
+            boolean isSaved = adminBOImpl.save(adminDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Admin saved...!").show();
@@ -191,7 +193,7 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String adminId = lblAdminId.getText();
         String name = txtName.getText();
         String email = txtEmail.getText();
@@ -242,7 +244,7 @@ public class AdminController implements Initializable {
                     password
             );
 
-            boolean isSaved = adminModel.updateAdmin(adminDTO);
+            boolean isSaved = adminBOImpl.update(adminDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Admin updated...!").show();
@@ -305,11 +307,11 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextAdminId();
         loadTableData();
 
@@ -325,10 +327,8 @@ public class AdminController implements Initializable {
         txtConfirmPassword.setText("");
     }
 
-    AdminModel adminModel = new AdminModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<AdminDTO> adminDTOS = adminModel.getAllAdmin();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<AdminDTO> adminDTOS = adminBOImpl.getAll();
 
         ObservableList<AdminTM> adminTMS = FXCollections.observableArrayList();
 
@@ -346,8 +346,8 @@ public class AdminController implements Initializable {
         tblAdmin.setItems(adminTMS);
     }
 
-    public void loadNextAdminId() throws SQLException {
-        String nextAdminId = adminModel.getNextAdminId();
+    public void loadNextAdminId() throws SQLException, ClassNotFoundException {
+        String nextAdminId = adminBOImpl.getNextId();
         lblAdminId.setText(nextAdminId);
         lblUsername.setText(nextAdminId);
     }

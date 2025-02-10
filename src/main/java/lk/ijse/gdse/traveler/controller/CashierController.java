@@ -15,11 +15,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.CashierBOImpl;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
 import lk.ijse.gdse.traveler.view.tdm.CashierTM;
-import lk.ijse.gdse.traveler.model.AdminModel;
-import lk.ijse.gdse.traveler.model.CashierModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -90,10 +90,11 @@ public class CashierController implements Initializable {
     @FXML
     private PasswordField txtPassword;
 
-    private final AdminModel adminModel = new AdminModel();
+    private final AdminBOImpl adminBOImpl = new AdminBOImpl();
+    CashierBOImpl cashierBOImpl = new CashierBOImpl();
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String cashierId = lblCashierId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -101,7 +102,7 @@ public class CashierController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = cashierModel.deleteCashier(cashierId);
+            boolean isDeleted = cashierBOImpl.delete(cashierId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Cashier deleted...!").show();
@@ -112,7 +113,7 @@ public class CashierController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String cashierId = lblCashierId.getText();
         String name = txtName.getText();
         String email = txtEmail.getText();
@@ -178,7 +179,7 @@ public class CashierController implements Initializable {
                     adminId
             );
 
-            boolean isSaved = cashierModel.saveCashier(cashierDTO);
+            boolean isSaved = cashierBOImpl.save(cashierDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Cashier saved...!").show();
@@ -189,7 +190,7 @@ public class CashierController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String cashierId = lblCashierId.getText();
         String name = txtName.getText();
         String email = txtEmail.getText();
@@ -243,7 +244,7 @@ public class CashierController implements Initializable {
                     adminId
             );
 
-            boolean isSaved = cashierModel.updateCashier(cashierDTO);
+            boolean isSaved = cashierBOImpl.update(cashierDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Cashier updated...!").show();
@@ -289,9 +290,9 @@ public class CashierController implements Initializable {
     }
 
     @FXML
-    void cmbAdminOnAction(ActionEvent event) throws SQLException {
+    void cmbAdminOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedAdminId = cmbAdminId.getSelectionModel().getSelectedItem();
-        AdminDTO adminDTO = adminModel.findById(selectedAdminId);
+        AdminDTO adminDTO = adminBOImpl.findById(selectedAdminId);
 
         // If admin found (adminDTO not null)
         if (adminDTO != null) {
@@ -320,7 +321,7 @@ public class CashierController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -343,7 +344,7 @@ public class CashierController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextCashierId();
         loadTableData();
         loadAdminIds();
@@ -361,10 +362,8 @@ public class CashierController implements Initializable {
         cmbAdminId.getSelectionModel().clearSelection();;
     }
 
-    CashierModel cashierModel = new CashierModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<CashierDTO> cashierDTOS = cashierModel.getAllCashier();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<CashierDTO> cashierDTOS = cashierBOImpl.getAll();
 
         ObservableList<CashierTM> cashierTMS = FXCollections.observableArrayList();
 
@@ -378,19 +377,25 @@ public class CashierController implements Initializable {
                     cashierDTO.getAdminId()
             );
             cashierTMS.add(cashierTM);
+            System.out.println(cashierTM.getCashierId());
+            System.out.println(cashierTM.getName());
+            System.out.println(cashierTM.getEmail());
+            System.out.println(cashierTM.getContactNumber());
+            System.out.println(cashierTM.getUsername());
+            System.out.println(cashierTM.getAdminId());
         }
 
         tblCashier.setItems(cashierTMS);
     }
 
-    public void loadNextCashierId() throws SQLException {
-        String nextCashierId = cashierModel.getNextCashierId();
+    public void loadNextCashierId() throws SQLException, ClassNotFoundException {
+        String nextCashierId = cashierBOImpl.getNextId();
         lblCashierId.setText(nextCashierId);
         lblUsername.setText(nextCashierId);
     }
 
-    private void loadAdminIds() throws SQLException {
-        ArrayList<String> adminIds = adminModel.getAllAdminIds();
+    private void loadAdminIds() throws SQLException, ClassNotFoundException {
+        ArrayList<String> adminIds = adminBOImpl.getAllIds();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(adminIds);
         cmbAdminId.setItems(observableList);

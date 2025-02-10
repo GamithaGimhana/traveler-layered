@@ -9,13 +9,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.VehicleBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.VehicleRentBOImpl;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.dto.VehicleRentDTO;
 import lk.ijse.gdse.traveler.view.tdm.BookVehicleTM;
-import lk.ijse.gdse.traveler.model.TravelerModel;
-import lk.ijse.gdse.traveler.model.VehicleModel;
-import lk.ijse.gdse.traveler.model.VehicleRentModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -94,14 +94,14 @@ public class VehicleRentController implements Initializable {
 
     private String requestId;
 
-    private final TravelerModel travelerModel = new TravelerModel();
-    private final VehicleModel vehicleModel = new VehicleModel();
-    private final VehicleRentModel vehicleRentModel = new VehicleRentModel();
+    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
 
     private final ObservableList<BookVehicleTM> bookVehicleTMS = FXCollections.observableArrayList();
 
     @FXML
-    void btnAddToBookingOnAction(ActionEvent event) throws SQLException {
+    void btnAddToBookingOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String rId = lblAssignmentId.getText();
         String tId = cmbTravelerId.getValue();
         String selectedVehicleId = cmbVId.getValue();
@@ -123,7 +123,7 @@ public class VehicleRentController implements Initializable {
             return;
         }
 
-        double priceForADay = vehicleModel.findById(selectedVehicleId).getDailyPrice();
+        double priceForADay = vehicleBOImpl.findById(selectedVehicleId).getDailyPrice();
         long rentedDays = ChronoUnit.DAYS.between(rentalDate, returnDate);
         double cost = priceForADay * rentedDays;
 
@@ -158,7 +158,7 @@ public class VehicleRentController implements Initializable {
     }
 
     @FXML
-    void btnRentVehicleOnAction(ActionEvent event) throws SQLException {
+    void btnRentVehicleOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (tblBooking.getItems().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please add vehicles to the cart!").show();
             return;
@@ -169,7 +169,7 @@ public class VehicleRentController implements Initializable {
             String requestId = bookVehicleTM.getRequestId();
 
             // Check if request_id exists in the request table
-            if (!vehicleRentModel.checkRequestIdExists(requestId)) {
+            if (!vehicleRentBOImpl.checkRequestIdExists(requestId)) {
                 new Alert(Alert.AlertType.ERROR, "Invalid Request ID: " + requestId).show();
                 return;
             }
@@ -188,7 +188,7 @@ public class VehicleRentController implements Initializable {
 
         boolean isSaved = true;
         for (VehicleRentDTO vehicleRentDTO : vehicleRentDTOS) {
-            isSaved &= vehicleRentModel.saveVehicleRent(vehicleRentDTO);
+            isSaved &= vehicleRentBOImpl.save(vehicleRentDTO);
         }
 
         if (isSaved) {
@@ -207,18 +207,18 @@ public class VehicleRentController implements Initializable {
     }
 
     @FXML
-    void cmbTravelerOnAction(ActionEvent event) throws SQLException {
+    void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedTravelerId = cmbTravelerId.getSelectionModel().getSelectedItem();
-        TravelerDTO travelerDTO = travelerModel.findById(selectedTravelerId);
+        TravelerDTO travelerDTO = travelerBOImpl.findById(selectedTravelerId);
         if (travelerDTO != null) {
             lblTravelerName.setText(travelerDTO.getName());
         }
     }
 
     @FXML
-    void cmbVIdOnAction(ActionEvent event) throws SQLException {
+    void cmbVIdOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedVehicleId = cmbVId.getSelectionModel().getSelectedItem();
-        VehicleDTO vehicleDTO = vehicleModel.findById(selectedVehicleId);
+        VehicleDTO vehicleDTO = vehicleBOImpl.findById(selectedVehicleId);
         if (vehicleDTO != null) {
             lblLPlate.setText(vehicleDTO.getLicensePlateNumber());
         }
@@ -334,7 +334,7 @@ public class VehicleRentController implements Initializable {
         System.out.println("Loading vehicle IDs for model: " + selectedVehicleModel);
 
         try {
-            ArrayList<String> vehicleIds = vehicleModel.getAllVehicleIds(selectedVehicleModel);
+            ArrayList<String> vehicleIds = vehicleBOImpl.getAllIds(selectedVehicleModel);
             if (!vehicleIds.isEmpty()) {
                 ObservableList<String> vehicleIdObservableList = FXCollections.observableArrayList(vehicleIds);
                 cmbVId.setItems(vehicleIdObservableList);
@@ -344,7 +344,7 @@ public class VehicleRentController implements Initializable {
                 new Alert(Alert.AlertType.ERROR, "All vehicles are fully booked on this model!").show();
                 cmbVId.setDisable(true);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle IDs: " + e.getMessage()).show();
         }
@@ -354,12 +354,12 @@ public class VehicleRentController implements Initializable {
         System.out.println("Loading vehicle models for type: " + selectedVehicleType);
 
         try {
-            ArrayList<String> vehicleModels = vehicleModel.getAllVehicleModels(selectedVehicleType);
+            ArrayList<String> vehicleModels = vehicleBOImpl.getAllModels(selectedVehicleType);
             ObservableList<String> vehicleModelObservableList = FXCollections.observableArrayList(vehicleModels);
             cmbVModel.setItems(vehicleModelObservableList);
 
             System.out.println("Vehicle models loaded: " + vehicleModelObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle models: " + e.getMessage()).show();
         }
@@ -369,12 +369,12 @@ public class VehicleRentController implements Initializable {
         System.out.println("Loading traveler IDs...");
 
         try {
-            ArrayList<String> travelerIds = travelerModel.getAllTravelerIds();
+            ArrayList<String> travelerIds = travelerBOImpl.getAllIds();
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
             cmbTravelerId.setItems(travelerIdsObservableList);
 
             System.out.println("Traveler IDs loaded: " + travelerIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading traveler IDs: " + e.getMessage()).show();
         }
@@ -384,12 +384,12 @@ public class VehicleRentController implements Initializable {
         System.out.println("Loading vehicle types...");
 
         try {
-            ArrayList<String> vehicleTypes = vehicleModel.getAllVehicleTypes();
+            ArrayList<String> vehicleTypes = vehicleBOImpl.getAllTypes();
             ObservableList<String> vehicleTypeObservableList = FXCollections.observableArrayList(vehicleTypes);
             cmbVType.setItems(vehicleTypeObservableList);
 
             System.out.println("Vehicle types loaded: " + vehicleTypeObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading vehicle types: " + e.getMessage()).show();
         }

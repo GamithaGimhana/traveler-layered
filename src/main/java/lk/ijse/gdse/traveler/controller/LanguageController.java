@@ -9,9 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
 import lk.ijse.gdse.traveler.view.tdm.LanguagesTM;
-import lk.ijse.gdse.traveler.model.LanguageModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -48,8 +48,10 @@ public class LanguageController implements Initializable {
     @FXML
     private TextField txtLanguage;
 
+    LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String langId = lblLangId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -57,7 +59,7 @@ public class LanguageController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = languageModel.deletLang(langId);
+            boolean isDeleted = languageBOImpl.delete(langId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Language deleted...!").show();
@@ -68,7 +70,7 @@ public class LanguageController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String langId = lblLangId.getText();
         String language = txtLanguage.getText();
 
@@ -90,7 +92,7 @@ public class LanguageController implements Initializable {
                     language
             );
 
-            boolean isSaved = languageModel.saveLang(languageDTO);
+            boolean isSaved = languageBOImpl.save(languageDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Language saved...!").show();
@@ -101,7 +103,7 @@ public class LanguageController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String langId = lblLangId.getText();
         String language = txtLanguage.getText();
 
@@ -123,7 +125,7 @@ public class LanguageController implements Initializable {
                     language
             );
 
-            boolean isSaved = languageModel.updateLang(languageDTO);
+            boolean isSaved = languageBOImpl.update(languageDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Language updated...!").show();
@@ -148,7 +150,7 @@ public class LanguageController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -167,7 +169,7 @@ public class LanguageController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextLangId();
         loadTableData();
 
@@ -179,10 +181,8 @@ public class LanguageController implements Initializable {
         txtLanguage.setText("");
     }
 
-    LanguageModel languageModel = new LanguageModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<LanguageDTO> languageDTOS = languageModel.getAllLanguages();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<LanguageDTO> languageDTOS = languageBOImpl.getAll();
 
         ObservableList<LanguagesTM> languagesTMS = FXCollections.observableArrayList();
 
@@ -197,8 +197,8 @@ public class LanguageController implements Initializable {
         tblLanguage.setItems(languagesTMS);
     }
 
-    public void loadNextLangId() throws SQLException {
-        String nextLangId = languageModel.getNextLangId();
+    public void loadNextLangId() throws SQLException, ClassNotFoundException {
+        String nextLangId = languageBOImpl.getNextId();
         lblLangId.setText(nextLangId);
     }
 }

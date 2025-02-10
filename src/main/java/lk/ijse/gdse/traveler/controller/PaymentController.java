@@ -8,12 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.custom.impl.PaymentBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.RequestBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
 import lk.ijse.gdse.traveler.dto.PaymentDTO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.view.tdm.PaymentTM;
-import lk.ijse.gdse.traveler.model.PaymentModel;
-import lk.ijse.gdse.traveler.model.RequestModel;
-import lk.ijse.gdse.traveler.model.TravelerModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -102,16 +102,16 @@ public class PaymentController implements Initializable {
     @FXML
     private TextField txtPaying;
 
-    private final TravelerModel travelerModel = new TravelerModel();
-    private final RequestModel requestModel = new RequestModel();
-    private final PaymentModel paymentModel = new PaymentModel();
+    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    private final RequestBOImpl requestBOImpl = new RequestBOImpl();
+    private final PaymentBOImpl paymentBOImpl = new PaymentBOImpl();
 
     private final String[] paymentTypes = {"Cash", "Card"};
 
     private final ObservableList<PaymentTM> paymentTMS = FXCollections.observableArrayList();
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String paymentId = lblPaymentId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -119,7 +119,7 @@ public class PaymentController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = paymentModel.deletePayment(paymentId);
+            boolean isDeleted = paymentBOImpl.delete(paymentId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Payment deleted...!").show();
@@ -130,7 +130,7 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String paymentId = lblPaymentId.getText();
         String tId = cmbTravelerId.getValue();
         String rId = cmbRId.getValue();
@@ -163,7 +163,7 @@ public class PaymentController implements Initializable {
                     pType
             );
 
-            boolean isSaved = paymentModel.savePayment(paymentDTO);
+            boolean isSaved = paymentBOImpl.save(paymentDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Payment saved...!").show();
@@ -183,7 +183,7 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String paymentId = lblPaymentId.getText();
         String tId = cmbTravelerId.getValue();
         String rId = cmbRId.getValue();
@@ -216,7 +216,7 @@ public class PaymentController implements Initializable {
                     pType
             );
 
-            boolean isSaved = paymentModel.updatePayment(paymentDTO);
+            boolean isSaved = paymentBOImpl.update(paymentDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Payment updated...!").show();
@@ -242,9 +242,9 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    void cmbTravelerOnAction(ActionEvent event) throws SQLException {
+    void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedTravelerId = cmbTravelerId.getSelectionModel().getSelectedItem();
-        TravelerDTO travelerDTO = travelerModel.findById(selectedTravelerId);
+        TravelerDTO travelerDTO = travelerBOImpl.findById(selectedTravelerId);
         if (travelerDTO != null) {
             lblTravelerName.setText(travelerDTO.getName());
         }
@@ -308,12 +308,12 @@ public class PaymentController implements Initializable {
         System.out.println("Loading traveler IDs...");
 
         try {
-            ArrayList<String> travelerIds = travelerModel.getAllTravelerIds();
+            ArrayList<String> travelerIds = travelerBOImpl.getAllIds();
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
             cmbTravelerId.setItems(travelerIdsObservableList);
 
             System.out.println("Traveler IDs loaded: " + travelerIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading traveler IDs: " + e.getMessage()).show();
         }
@@ -323,12 +323,12 @@ public class PaymentController implements Initializable {
         System.out.println("Loading Request IDs...");
 
         try {
-            ArrayList<String> travelerIds = requestModel.getAllRequestIds(selectedTravelerId);
+            ArrayList<String> travelerIds = requestBOImpl.getAllIds(selectedTravelerId);
             ObservableList<String> travelerIdsObservableList = FXCollections.observableArrayList(travelerIds);
             cmbTravelerId.setItems(travelerIdsObservableList);
 
             System.out.println("Request IDs loaded: " + travelerIdsObservableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading Request IDs: " + e.getMessage()).show();
         }

@@ -14,11 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
 import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.TravelerDAOImpl;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.view.tdm.TravelerTM;
-import lk.ijse.gdse.traveler.model.TravelerModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,11 +95,12 @@ public class TravelerController implements Initializable {
     @FXML
     private TextField txtNic;
 
-    TravelerModel travelerModel = new TravelerModel();
-    TravelerDAO travelerDAO = new TravelerDAOImpl();
+//    TravelerModel travelerModel = new TravelerModel();
+//    TravelerDAO travelerDAO = new TravelerDAOImpl();
+    TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String travelerId = lblTravelerId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -107,7 +108,7 @@ public class TravelerController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = travelerDAO.delete(travelerId);
+            boolean isDeleted = travelerBOImpl.delete(travelerId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler deleted...!").show();
@@ -118,7 +119,7 @@ public class TravelerController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String travelerId = lblTravelerId.getText();
         String name = txtName.getText();
         String nic = txtNic.getText();
@@ -176,7 +177,7 @@ public class TravelerController implements Initializable {
                     nic
             );
 
-            boolean isSaved = travelerDAO.save(travelerDTO);
+            boolean isSaved = travelerBOImpl.save(travelerDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler saved...!").show();
@@ -187,7 +188,7 @@ public class TravelerController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String travelerId = lblTravelerId.getText();
         String name = txtName.getText();
         String nic = txtNic.getText();
@@ -245,7 +246,7 @@ public class TravelerController implements Initializable {
                     nic
             );
 
-            boolean isSaved = travelerDAO.update(travelerDTO);
+            boolean isSaved = travelerBOImpl.update(travelerDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Traveler updated...!").show();
@@ -309,11 +310,11 @@ public class TravelerController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextTravelerId();
         loadTableData();
 
@@ -329,8 +330,8 @@ public class TravelerController implements Initializable {
         txtNationality.setText("");
     }
 
-    private void loadTableData() throws SQLException {
-        ArrayList<TravelerDTO> travelerDTOS = travelerDAO.getAll();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<TravelerDTO> travelerDTOS = travelerBOImpl.getAll();
 
         ObservableList<TravelerTM> travelerTMS = FXCollections.observableArrayList();
 
@@ -349,8 +350,8 @@ public class TravelerController implements Initializable {
         tblTraveler.setItems(travelerTMS);
     }
 
-    public void loadNextTravelerId() throws SQLException {
-        String nextTravelerId = travelerDAO.getNextId();
+    public void loadNextTravelerId() throws SQLException, ClassNotFoundException {
+        String nextTravelerId = travelerBOImpl.getNextId();
         lblTravelerId.setText(nextTravelerId);
     }
 

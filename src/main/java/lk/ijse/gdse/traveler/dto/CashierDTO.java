@@ -14,7 +14,7 @@ public class CashierDTO implements Serializable {
     private String name;
     private String email;
     private String contactNumber;
-    private String adminId;
     private String username;
     private String password;
+    private String adminId;
 }

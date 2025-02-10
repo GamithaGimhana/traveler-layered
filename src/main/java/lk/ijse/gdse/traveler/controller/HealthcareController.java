@@ -8,9 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.impl.HealthcareBOImpl;
 import lk.ijse.gdse.traveler.dto.HealthcareDTO;
 import lk.ijse.gdse.traveler.view.tdm.HealthcareTM;
-import lk.ijse.gdse.traveler.model.HealthcareModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -56,8 +56,10 @@ public class HealthcareController implements Initializable {
     @FXML
     private TextField txtName;
 
+    HealthcareBOImpl healthcareBOImpl = new HealthcareBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String healthcareId = lblHealthcareId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -65,7 +67,7 @@ public class HealthcareController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = healthcareModel.deleteHealthcare(healthcareId);
+            boolean isDeleted = healthcareBOImpl.delete(healthcareId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Healthcare deleted...!").show();
@@ -76,7 +78,7 @@ public class HealthcareController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String healthcareId = lblHealthcareId.getText();
         String name = txtName.getText();
         String contact = txtContact.getText();
@@ -109,7 +111,7 @@ public class HealthcareController implements Initializable {
                     isAvailable
             );
 
-            boolean isSaved = healthcareModel.saveHealthcare(healthcareDTO);
+            boolean isSaved = healthcareBOImpl.save(healthcareDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Healthcare saved...!").show();
@@ -120,7 +122,7 @@ public class HealthcareController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String healthcareId = lblHealthcareId.getText();
         String name = txtName.getText();
         String contact = txtContact.getText();
@@ -153,7 +155,7 @@ public class HealthcareController implements Initializable {
                     isAvailable
             );
 
-            boolean isSaved = healthcareModel.updateHealthcare(healthcareDTO);
+            boolean isSaved = healthcareBOImpl.update(healthcareDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Healthcare updated...!").show();
@@ -180,7 +182,7 @@ public class HealthcareController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -201,7 +203,7 @@ public class HealthcareController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextHealthcareId();
         loadTableData();
 
@@ -215,10 +217,8 @@ public class HealthcareController implements Initializable {
         chBoxAvailable.setSelected(false);
     }
 
-    HealthcareModel healthcareModel = new HealthcareModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<HealthcareDTO> healthcareDTOS = healthcareModel.getAllHealthcares();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<HealthcareDTO> healthcareDTOS = healthcareBOImpl.getAll();
 
         ObservableList<HealthcareTM> healthcareTMS = FXCollections.observableArrayList();
 
@@ -235,8 +235,8 @@ public class HealthcareController implements Initializable {
         tblHealthcare.setItems(healthcareTMS);
     }
 
-    public void loadNextHealthcareId() throws SQLException {
-        String nextHealthcareId = healthcareModel.getNextHealthcareId();
+    public void loadNextHealthcareId() throws SQLException, ClassNotFoundException {
+        String nextHealthcareId = healthcareBOImpl.getNextId();
         lblHealthcareId.setText(nextHealthcareId);
     }
 }

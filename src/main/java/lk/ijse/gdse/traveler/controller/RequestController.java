@@ -10,13 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.custom.impl.CashierBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.RequestBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
 import lk.ijse.gdse.traveler.dto.CashierDTO;
 import lk.ijse.gdse.traveler.dto.RequestDTO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.view.tdm.RequestTM;
-import lk.ijse.gdse.traveler.model.CashierModel;
-import lk.ijse.gdse.traveler.model.RequestModel;
-import lk.ijse.gdse.traveler.model.TravelerModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -94,13 +94,14 @@ public class RequestController implements Initializable {
     @FXML
     private TableView<RequestTM> tblRequest;
 
-    private final TravelerModel travelerModel = new TravelerModel();
-    private final CashierModel cashierModel = new CashierModel();
+    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    private final CashierBOImpl cashierBOImpl = new CashierBOImpl();
+    RequestBOImpl requestBOImpl = new RequestBOImpl();
 
     ObservableList<String> requestTypes = FXCollections.observableArrayList("Trip", "Vehicle Rent", "Guide Assignment");
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String requestId = lblRequestId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -108,7 +109,7 @@ public class RequestController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = requestModel.deleteRequest(requestId);
+            boolean isDeleted = requestBOImpl.delete(requestId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Request deleted...!").show();
@@ -119,7 +120,7 @@ public class RequestController implements Initializable {
     }
 
     @FXML
-    void btnMakeARequestOnAction(ActionEvent event) throws SQLException, IOException {
+    void btnMakeARequestOnAction(ActionEvent event) throws SQLException, IOException, ClassNotFoundException {
         String reqId = lblRequestId.getText();
         String travelerId = cmbTravelerId.getValue();
         Date reqDate = Date.valueOf(requestDate.getText());
@@ -135,7 +136,7 @@ public class RequestController implements Initializable {
                     cashierId
             );
 
-            boolean isSaved = requestModel.saveRequest(requestDTO);
+            boolean isSaved = requestBOImpl.save(requestDTO);
             if (isSaved) {
                 String selectedType = cmbReqType.getSelectionModel().getSelectedItem();
 
@@ -189,14 +190,14 @@ public class RequestController implements Initializable {
     }
 
     @FXML
-    void btnResetOnAction(ActionEvent event) throws SQLException {
+    void btnResetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void cmbCashierOnAction(ActionEvent event) throws SQLException {
+    void cmbCashierOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedCashierId = cmbCashierId.getSelectionModel().getSelectedItem();
-        CashierDTO cashierDTO = cashierModel.findById(selectedCashierId);
+        CashierDTO cashierDTO = cashierBOImpl.findById(selectedCashierId);
 
         // If traveler found (travelerDTO not null)
         if (cashierDTO != null) {
@@ -207,9 +208,9 @@ public class RequestController implements Initializable {
     }
 
     @FXML
-    void cmbTravelerOnAction(ActionEvent event) throws SQLException {
+    void cmbTravelerOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedTravelerId = cmbTravelerId.getSelectionModel().getSelectedItem();
-        TravelerDTO travelerDTO = travelerModel.findById(selectedTravelerId);
+        TravelerDTO travelerDTO = travelerBOImpl.findById(selectedTravelerId);
 
         // If traveler found (travelerDTO not null)
         if (travelerDTO != null) {
@@ -235,9 +236,7 @@ public class RequestController implements Initializable {
         }
     }
 
-    RequestModel requestModel = new RequestModel();
-
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextRequestId();
         loadTableData();
 
@@ -259,8 +258,8 @@ public class RequestController implements Initializable {
         lblCashierName.setText("");
     }
 
-    private void loadTableData() throws SQLException {
-        ArrayList<RequestDTO> requestDTOS = requestModel.getAllRequests();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<RequestDTO> requestDTOS = requestBOImpl.getAll();
 
         ObservableList<RequestTM> requestTMS = FXCollections.observableArrayList();
 
@@ -278,20 +277,20 @@ public class RequestController implements Initializable {
         tblRequest.setItems(requestTMS);
     }
 
-    public void loadNextRequestId() throws SQLException {
-        String nextGuideId = requestModel.getNextRequestId();
+    public void loadNextRequestId() throws SQLException, ClassNotFoundException {
+        String nextGuideId = requestBOImpl.getNextId();
         lblRequestId.setText(nextGuideId);
     }
 
-    private void loadTravelerIds() throws SQLException {
-        ArrayList<String> travelerIds = travelerModel.getAllTravelerIds();
+    private void loadTravelerIds() throws SQLException, ClassNotFoundException {
+        ArrayList<String> travelerIds = travelerBOImpl.getAllIds();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(travelerIds);
         cmbTravelerId.setItems(observableList);
     }
 
-    private void loadCashierIds() throws SQLException {
-        ArrayList<String> cashierIds = cashierModel.getAllCashierIds();
+    private void loadCashierIds() throws SQLException, ClassNotFoundException {
+        ArrayList<String> cashierIds = cashierBOImpl.getAllIds();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(cashierIds);
         cmbCashierId.setItems(observableList);

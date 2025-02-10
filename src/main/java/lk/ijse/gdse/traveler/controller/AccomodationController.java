@@ -8,9 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.custom.AccomodationBO;
+import lk.ijse.gdse.traveler.bo.custom.impl.AccomodationBOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
 import lk.ijse.gdse.traveler.view.tdm.AccomodationTM;
-import lk.ijse.gdse.traveler.model.AccomodationModel;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -56,8 +57,10 @@ public class AccomodationController implements Initializable {
     @FXML
     private TextField txtType;
 
+    AccomodationBOImpl accomodationBOImpl = new AccomodationBOImpl();
+
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String accommodationId = lblAccomodationId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
@@ -65,7 +68,7 @@ public class AccomodationController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = accomodationModel.deleteAccommodation(accommodationId);
+            boolean isDeleted = accomodationBOImpl.delete(accommodationId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Accomodation deleted...!").show();
@@ -76,7 +79,7 @@ public class AccomodationController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String accomodationId = lblAccomodationId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -110,7 +113,7 @@ public class AccomodationController implements Initializable {
                     contact
             );
 
-            boolean isSaved = accomodationModel.saveAccommodation(accomodationDTO);
+            boolean isSaved = accomodationBOImpl.save(accomodationDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Accommodation saved...!").show();
@@ -121,7 +124,7 @@ public class AccomodationController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) throws SQLException {
+    void btnUpdateOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String accomodationId = lblAccomodationId.getText();
         String name = txtName.getText();
         String type = txtType.getText();
@@ -155,7 +158,7 @@ public class AccomodationController implements Initializable {
                     contact
             );
 
-            boolean isSaved = accomodationModel.updateAccommodation(accomodationDTO);
+            boolean isSaved = accomodationBOImpl.update(accomodationDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Accommodation updated...!").show();
@@ -182,7 +185,7 @@ public class AccomodationController implements Initializable {
     }
 
     @FXML
-    void resetOnAction(ActionEvent event) throws SQLException {
+    void resetOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -203,7 +206,7 @@ public class AccomodationController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         loadNextAccomodationId();
         loadTableData();
 
@@ -217,10 +220,8 @@ public class AccomodationController implements Initializable {
         txtContact.setText("");
     }
 
-    AccomodationModel accomodationModel = new AccomodationModel();
-
-    private void loadTableData() throws SQLException {
-        ArrayList<AccomodationDTO> accomodationDTOS = accomodationModel.getAllAccommodations();
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        ArrayList<AccomodationDTO> accomodationDTOS = accomodationBOImpl.getAll();
 
         ObservableList<AccomodationTM> accomodationTMS = FXCollections.observableArrayList();
 
@@ -237,8 +238,8 @@ public class AccomodationController implements Initializable {
         tblAccomodation.setItems(accomodationTMS);
     }
 
-    public void loadNextAccomodationId() throws SQLException {
-        String nextAccomodationId = accomodationModel.getNextAccomodationId();
+    public void loadNextAccomodationId() throws SQLException, ClassNotFoundException {
+        String nextAccomodationId = accomodationBOImpl.getNextId();
         lblAccomodationId.setText(nextAccomodationId);
     }
 }
