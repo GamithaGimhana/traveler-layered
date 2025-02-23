@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.*;
 import lk.ijse.gdse.traveler.view.tdm.BookTripTM;
@@ -138,12 +139,19 @@ public class TripController implements Initializable {
 
     private String requestId;
 
-    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
-    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
-    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
-    private final DriverBOImpl driverBOImpl = new DriverBOImpl();
-    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
-    private final TripBOImpl tripBOImpl = new TripBOImpl();
+//    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+//    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+//    private final DriverBOImpl driverBOImpl = new DriverBOImpl();
+//    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+//    private final TripBOImpl tripBOImpl = new TripBOImpl();
+
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
+    VehicleBOImpl vehicleBOImpl = (VehicleBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLE);
+    GuideBOImpl guideBOImpl = (GuideBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDE);
+    LanguageBOImpl languageBOImpl = (LanguageBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.LANGUAGE);
+    DriverBOImpl driverBOImpl = (DriverBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.DRIVER);
+    TripBOImpl tripBOImpl = (TripBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRIP);
 
     private final ObservableList<BookTripTM> bookTripTMS = FXCollections.observableArrayList();
 

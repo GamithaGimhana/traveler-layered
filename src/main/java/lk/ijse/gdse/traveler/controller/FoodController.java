@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.FoodBOImpl;
 import lk.ijse.gdse.traveler.dto.FoodDTO;
 import lk.ijse.gdse.traveler.view.tdm.FoodTM;
@@ -56,7 +58,8 @@ public class FoodController implements Initializable {
     @FXML
     private TextField txtType;
 
-    FoodBOImpl foodBOImpl = new FoodBOImpl();
+//    FoodBOImpl foodBOImpl = new FoodBOImpl();
+    FoodBOImpl foodBOImpl = (FoodBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.FOOD);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

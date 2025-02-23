@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
 import lk.ijse.gdse.traveler.dao.custom.TravelerDAO;
 import lk.ijse.gdse.traveler.dao.custom.impl.TravelerDAOImpl;
@@ -97,7 +98,8 @@ public class TravelerController implements Initializable {
 
 //    TravelerModel travelerModel = new TravelerModel();
 //    TravelerDAO travelerDAO = new TravelerDAOImpl();
-    TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

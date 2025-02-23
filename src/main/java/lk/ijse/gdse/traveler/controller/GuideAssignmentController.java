@@ -9,10 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
-import lk.ijse.gdse.traveler.bo.custom.impl.GuideAssignmentBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.*;
 import lk.ijse.gdse.traveler.view.tdm.BookGuideTM;
 
@@ -106,10 +104,17 @@ public class GuideAssignmentController implements Initializable {
 
     private String requestId;
 
-    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
-    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
-    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
-    private final GuideAssignmentBOImpl guideAssignmentBOImpl = new GuideAssignmentBOImpl();
+//    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+//    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+//    private final GuideAssignmentBOImpl guideAssignmentBOImpl = new GuideAssignmentBOImpl();
+
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
+    GuideBOImpl guideBOImpl = (GuideBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDE);
+    LanguageBOImpl languageBOImpl = (LanguageBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.LANGUAGE);
+    GuideAssignmentBOImpl guideAssignmentBOImpl = (GuideAssignmentBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDEASSIGNMENT);
+
+    AdminBOImpl adminBOImpl = (AdminBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.ADMIN);
 
     private final ObservableList<BookGuideTM> bookGuideTMS = FXCollections.observableArrayList();
 

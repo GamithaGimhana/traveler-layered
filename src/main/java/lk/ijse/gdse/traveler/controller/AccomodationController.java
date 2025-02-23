@@ -8,8 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.AccomodationBO;
 import lk.ijse.gdse.traveler.bo.custom.impl.AccomodationBOImpl;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.dto.AccomodationDTO;
 import lk.ijse.gdse.traveler.view.tdm.AccomodationTM;
 
@@ -57,7 +59,8 @@ public class AccomodationController implements Initializable {
     @FXML
     private TextField txtType;
 
-    AccomodationBOImpl accomodationBOImpl = new AccomodationBOImpl();
+//    AccomodationBOImpl accomodationBOImpl = new AccomodationBOImpl();
+    AccomodationBOImpl accomodationBOImpl = (AccomodationBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.ACCOMODATION);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

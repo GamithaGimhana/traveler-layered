@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.CashierBOImpl;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
@@ -90,8 +91,10 @@ public class CashierController implements Initializable {
     @FXML
     private PasswordField txtPassword;
 
-    private final AdminBOImpl adminBOImpl = new AdminBOImpl();
-    CashierBOImpl cashierBOImpl = new CashierBOImpl();
+//    private final AdminBOImpl adminBOImpl = new AdminBOImpl();
+//    CashierBOImpl cashierBOImpl = new CashierBOImpl();
+    AdminBOImpl adminBOImpl = (AdminBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.ADMIN);
+    CashierBOImpl cashierBOImpl = (CashierBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.CASHIER);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

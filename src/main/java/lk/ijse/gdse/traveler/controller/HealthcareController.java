@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.HealthcareBOImpl;
 import lk.ijse.gdse.traveler.dto.HealthcareDTO;
 import lk.ijse.gdse.traveler.view.tdm.HealthcareTM;
@@ -56,7 +58,8 @@ public class HealthcareController implements Initializable {
     @FXML
     private TextField txtName;
 
-    HealthcareBOImpl healthcareBOImpl = new HealthcareBOImpl();
+//    HealthcareBOImpl healthcareBOImpl = new HealthcareBOImpl();
+    HealthcareBOImpl healthcareBOImpl = (HealthcareBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.HEALTHCARE);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

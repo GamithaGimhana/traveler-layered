@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.DriverBOImpl;
 import lk.ijse.gdse.traveler.dto.DriverDTO;
 import lk.ijse.gdse.traveler.view.tdm.DriverTM;
@@ -62,7 +64,8 @@ public class DriverController implements Initializable {
     @FXML
     private TextField txtName;
 
-    DriverBOImpl driverBOImpl = new DriverBOImpl();
+//    DriverBOImpl driverBOImpl = new DriverBOImpl();
+    DriverBOImpl driverBOImpl = (DriverBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.DRIVER);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

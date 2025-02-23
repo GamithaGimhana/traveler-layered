@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.PaymentDTO;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
@@ -103,11 +104,17 @@ public class PaymentController implements Initializable {
     @FXML
     private TextField txtPaying;
 
-    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
-    private final RequestBOImpl requestBOImpl = new RequestBOImpl();
-    private final PaymentBOImpl paymentBOImpl = new PaymentBOImpl();
-    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
-    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
+//    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    private final RequestBOImpl requestBOImpl = new RequestBOImpl();
+//    private final PaymentBOImpl paymentBOImpl = new PaymentBOImpl();
+//    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+//    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
+
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
+    RequestBOImpl requestBOImpl = (RequestBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.REQUEST);
+    PaymentBOImpl paymentBOImpl = (PaymentBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.PAYMENT);
+    VehicleBOImpl vehicleBOImpl = (VehicleBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLE);
+    VehicleRentBOImpl vehicleRentBOImpl = (VehicleRentBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLERENT);
 
     private final String[] paymentTypes = {"Cash", "Card"};
 

@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.CashierBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.RequestBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
@@ -94,9 +95,13 @@ public class RequestController implements Initializable {
     @FXML
     private TableView<RequestTM> tblRequest;
 
-    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
-    private final CashierBOImpl cashierBOImpl = new CashierBOImpl();
-    RequestBOImpl requestBOImpl = new RequestBOImpl();
+//    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    private final CashierBOImpl cashierBOImpl = new CashierBOImpl();
+//    RequestBOImpl requestBOImpl = new RequestBOImpl();
+
+    RequestBOImpl requestBOImpl = (RequestBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.REQUEST);
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
+    CashierBOImpl cashierBOImpl = (CashierBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.CASHIER);
 
     ObservableList<String> requestTypes = FXCollections.observableArrayList("Trip", "Vehicle Rent", "Guide Assignment");
 

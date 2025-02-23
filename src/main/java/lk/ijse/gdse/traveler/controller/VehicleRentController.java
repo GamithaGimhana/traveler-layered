@@ -9,9 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
-import lk.ijse.gdse.traveler.bo.custom.impl.TravelerBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.VehicleBOImpl;
-import lk.ijse.gdse.traveler.bo.custom.impl.VehicleRentBOImpl;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.*;
 import lk.ijse.gdse.traveler.dto.TravelerDTO;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.dto.VehicleRentDTO;
@@ -94,9 +93,13 @@ public class VehicleRentController implements Initializable {
 
     private String requestId;
 
-    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
-    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
-    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
+//    private final TravelerBOImpl travelerBOImpl = new TravelerBOImpl();
+//    private final VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+//    private final VehicleRentBOImpl vehicleRentBOImpl = new VehicleRentBOImpl();
+
+    TravelerBOImpl travelerBOImpl = (TravelerBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.TRAVELER);
+    VehicleBOImpl vehicleBOImpl = (VehicleBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLE);
+    VehicleRentBOImpl vehicleRentBOImpl = (VehicleRentBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLERENT);
 
     private final ObservableList<BookVehicleTM> bookVehicleTMS = FXCollections.observableArrayList();
 

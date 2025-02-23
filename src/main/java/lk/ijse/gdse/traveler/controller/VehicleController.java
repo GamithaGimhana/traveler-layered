@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.VehicleBOImpl;
 import lk.ijse.gdse.traveler.dto.VehicleDTO;
 import lk.ijse.gdse.traveler.view.tdm.VehicleTM;
@@ -86,7 +87,8 @@ public class VehicleController implements Initializable {
     @FXML
     private TextField txtDailyPrice;
 
-    VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+//    VehicleBOImpl vehicleBOImpl = new VehicleBOImpl();
+    VehicleBOImpl vehicleBOImpl = (VehicleBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.VEHICLE);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

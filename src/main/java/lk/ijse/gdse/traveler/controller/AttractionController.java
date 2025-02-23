@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.traveler.bo.BOFactory;
+import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.AttractionBOImpl;
 import lk.ijse.gdse.traveler.dto.AttractionDTO;
 import lk.ijse.gdse.traveler.view.tdm.AttractionTM;
@@ -62,7 +64,8 @@ public class AttractionController implements Initializable {
     @FXML
     private TextField txtType;
 
-    AttractionBOImpl attractionBOImpl = new AttractionBOImpl();
+//    AttractionBOImpl attractionBOImpl = new AttractionBOImpl();
+    AttractionBOImpl attractionBOImpl = (AttractionBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.ATTRACTION);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

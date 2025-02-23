@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
 import lk.ijse.gdse.traveler.dto.GuideDTO;
 import lk.ijse.gdse.traveler.view.tdm.GuideTM;
@@ -68,7 +69,8 @@ public class GuideController implements Initializable {
     @FXML
     private TextField txtName;
 
-    GuideBOImpl guideBOImpl = new GuideBOImpl();
+//    GuideBOImpl guideBOImpl = new GuideBOImpl();
+    GuideBOImpl guideBOImpl = (GuideBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDE);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

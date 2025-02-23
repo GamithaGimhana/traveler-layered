@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.AdminBOImpl;
 import lk.ijse.gdse.traveler.dto.AdminDTO;
 import lk.ijse.gdse.traveler.view.tdm.AdminTM;
@@ -96,7 +97,8 @@ public class AdminController implements Initializable {
     @FXML
     private PasswordField txtPassword;
 
-    AdminBOImpl adminBOImpl = new AdminBOImpl();
+//    AdminBOImpl adminBOImpl = new AdminBOImpl();
+    AdminBOImpl adminBOImpl = (AdminBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.ADMIN);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

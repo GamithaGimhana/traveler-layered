@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.GuideBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.GuideLanguagesBOImpl;
 import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
@@ -58,9 +59,13 @@ public class GuideLanguagesController implements Initializable {
     @FXML
     private TableView<GuideLanguagesTM> tblGuideLanguage;
 
-    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
-    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
-    GuideLanguagesBOImpl guideLanguagesBOImpl = new GuideLanguagesBOImpl();
+//    private final LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+//    private final GuideBOImpl guideBOImpl = new GuideBOImpl();
+//    GuideLanguagesBOImpl guideLanguagesBOImpl = new GuideLanguagesBOImpl();
+
+    GuideBOImpl guideBOImpl = (GuideBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDE);
+    LanguageBOImpl languageBOImpl = (LanguageBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.LANGUAGE);
+    GuideLanguagesBOImpl guideLanguagesBOImpl = (GuideLanguagesBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.GUIDELANGUAGE);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

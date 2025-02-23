@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.traveler.bo.BOFactory;
 import lk.ijse.gdse.traveler.bo.custom.impl.LanguageBOImpl;
 import lk.ijse.gdse.traveler.dto.LanguageDTO;
 import lk.ijse.gdse.traveler.view.tdm.LanguagesTM;
@@ -48,7 +49,8 @@ public class LanguageController implements Initializable {
     @FXML
     private TextField txtLanguage;
 
-    LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+//    LanguageBOImpl languageBOImpl = new LanguageBOImpl();
+    LanguageBOImpl languageBOImpl = (LanguageBOImpl) BOFactory.getInstance().getBO(BOFactory.BOType.LANGUAGE);
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
